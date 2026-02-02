@@ -1,0 +1,10 @@
+main {
+  background: #e7ffff;
+}
+
+.form {
+  border: 1px solid #00efff;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+}

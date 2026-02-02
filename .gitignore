@@ -1,3 +1,7 @@
+# Cosas de angular y vscode
+.angular/
+.vscode/
+
 # Logs
 logs
 *.log
