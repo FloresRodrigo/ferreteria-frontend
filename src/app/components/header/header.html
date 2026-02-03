@@ -16,33 +16,37 @@
               <span class="nav-text">Inicio</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="isAdmin()" class="nav-item">
             <a class="nav-link fw-semibold nav-animated-item" routerLink="/inventario">
               <i class="bi bi-box-seam nav-icon"></i>
               <span class="nav-text">Inventario</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="isLogged()" class="nav-item">
             <a class="nav-link fw-semibold nav-animated-item" routerLink="/compra">
               <i class="bi bi-cart3 nav-icon"></i>
-              <span class="nav-text">Compras</span>
+              <span class="nav-text">Comprar</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="!isLogged()" class="nav-item d-flex gap-2">
+            <a class="btn btn-outline-primary px-3 d-flex align-items-center" routerLink="/registro">
+              <i class="bi bi-person-plus me-1 d-none d-lg-inline"></i>
+              <span>Registrarse</span>
+            </a>
             <a class="btn btn-outline-primary px-3 d-flex align-items-center" routerLink="/login">
               <i class="bi bi-box-arrow-in-right me-1 d-none d-lg-inline"></i>
               <span>Iniciar sesión</span>
             </a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" href="#" role="button"
+          <li *ngIf="isLogged()" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" role="button"
               data-bs-toggle="dropdown">
               <i class="bi bi-person-circle me-2 fs-5 d-none d-lg-inline"></i>
-              <span>usuario</span>
+              <span *ngIf="authService.userLogged() as user">{{ user.email }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
               <li>
-                <button class="dropdown-item text-danger fw-semibold d-flex align-items-center">
+                <button class="dropdown-item text-danger fw-semibold d-flex align-items-center" (click)="logout()">
                   <i class="bi bi-box-arrow-right me-1"></i>
                   <span>Cerrar sesión</span>
                 </button>
