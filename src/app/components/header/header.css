@@ -116,7 +116,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(40%);
-  font-size: 0.85rem;
+  font-size: 1rem;
   opacity: 0;
   color: #ffffff;
   transition: transform 0.25s ease, opacity 0.25s ease;
@@ -126,12 +126,13 @@
   .nav-animated-item:hover .nav-icon {
     transform: translateY(-20px);
     opacity: 0;
+    color: #ffffff;
   }
 
   .nav-animated-item:hover .nav-text {
     transform: translateY(-50%);
     opacity: 1;
-    color: #00bcff;
+    color: #ffffff;
   }
 }
 
@@ -142,6 +143,8 @@
     flex-direction: row;
     gap: 6px;
     overflow: visible;
+    border-bottom: 1px solid #00bcff;
+    padding: 0.5rem 0;
   }
 
   .nav-animated-item .nav-icon {

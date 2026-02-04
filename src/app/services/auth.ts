@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from '../api.config';
 import { Observable } from 'rxjs';
@@ -23,8 +23,8 @@ export class Auth {
     return this._http.post(this.url+'/forgot-password', { email: email });
   };
 
-  public resetPassword(token:string, password:string): Observable<any> {
-    return this._http.post(this.url+'/reset-password', { token: token, password: password });
+  public resetPassword(token:string | null, password:string): Observable<any> {
+    return this._http.post(this.url+'/reset-password'+'?token='+token, { password: password });
   };
 
   public persistirSesion(usuario:any) {

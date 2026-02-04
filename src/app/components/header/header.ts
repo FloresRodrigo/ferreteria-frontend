@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth as AuthService } from '../../services/auth';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,9 @@ import { CommonModule } from '@angular/common';
 export class Header {
   user: any;
 
-  constructor(public authService: AuthService) {};
+  constructor(public authService: AuthService,
+              private router: Router
+  ) {};
 
   isAdmin(): boolean {
     return this.authService.isAdmin();
@@ -29,5 +31,6 @@ export class Header {
   logout() {
     this.authService.logout();
     this.user = null;
+    this.router.navigateByUrl('');
   };
 }

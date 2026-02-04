@@ -26,6 +26,7 @@ export class Login {
     this.msgLogin.set("");
     if(!this.login || !this.password) {
       this.msgLogin.set("Debe ingresar todos los campos");
+      return;
     };
     this.loading.set(true);
     this.authService.login(this.login, this.password)

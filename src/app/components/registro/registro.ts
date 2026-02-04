@@ -17,6 +17,7 @@ export class Registro {
   email = "";
   password = "";
   msgRegistro = signal<string>("");
+  msgOk = signal<boolean>(false);
   loading = signal<boolean>(false);
 
   constructor(private authService: AuthService) {};
@@ -31,11 +32,13 @@ export class Registro {
     this.authService.register(this.nombre, this.username, this.email, this.password)
     .pipe(finalize(() => (this.loading.set(false))))
     .subscribe(
-      (_result:any) => {
-        this.msgRegistro.set("Te has registrado correctamente, ya puedes iniciar sesión");
+      (result:any) => {
+        this.msgOk.set(true);
+        this.msgRegistro.set(result.msg);
         form.resetForm();
       },
       (error:any) => {
+        this.msgOk.set(false);
         this.msgRegistro.set(error.error.msg || "Error del servidor");
       }
     );
