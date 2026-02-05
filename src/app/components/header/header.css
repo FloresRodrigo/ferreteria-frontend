@@ -96,7 +96,7 @@
 .nav-animated-item {
   position: relative;
   height: 40px;
-  width: 60px;
+  min-width: 90px;
   padding: 0 !important;
   display: flex;
   flex-direction: column;
@@ -120,6 +120,7 @@
   opacity: 0;
   color: #ffffff;
   transition: transform 0.25s ease, opacity 0.25s ease;
+  white-space: nowrap;
 }
 
 @media (min-width: 992px) {

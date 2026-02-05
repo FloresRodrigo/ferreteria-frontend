@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class Auth {
-  private url = API_CONFIG.baseUrl+"/"+API_CONFIG.endpoints.auth;
+  private url = API_CONFIG.baseUrl+'/'+API_CONFIG.endpoints.auth;
 
   constructor(private _http: HttpClient) {};
 
