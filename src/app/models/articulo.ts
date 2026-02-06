@@ -5,7 +5,7 @@ export class Articulo {
     imagen: string;
     precio: number;
     stock: number;
-    total_vendido!: number;
+    total_vendido: number;
 
     constructor() {
         this.nombre = "";
@@ -13,5 +13,6 @@ export class Articulo {
         this.imagen = "";
         this.precio = 0;
         this.stock = 0;
+        this.total_vendido = 0;
     };
 }

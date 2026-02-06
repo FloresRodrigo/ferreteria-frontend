@@ -18,4 +18,8 @@ export class Articulo {
   public getArticulos(): Observable<any> {
     return this._http.get(this.url);
   };
+
+  public getInventario(params: any):Observable<any> {
+    return this._http.get(this.url+'/inventario', { params });
+  };
 }

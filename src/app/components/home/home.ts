@@ -30,6 +30,8 @@ export class Home implements OnInit{
         this.articulosDestacados.set(result.data.map((element:any) => {
           return Object.assign(new ArticuloModel(), element);
         }));
+      }, (error:any) => {
+        alert(error.error.msg || "Error del servidor");
       }
     );
   };
@@ -40,6 +42,8 @@ export class Home implements OnInit{
         this.articulosNuevos.set(result.data.articulos.map((element:any) => {
           return Object.assign(new ArticuloModel(), element);
         }));
+      }, (error:any) => {
+        alert(error.error.msg || "Error del servidor");
       }
     );
   };

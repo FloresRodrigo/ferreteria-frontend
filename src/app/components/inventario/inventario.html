@@ -1,0 +1,96 @@
+<main class="container py-5">
+  <div class="bg-white shadow-sm border-0 rounded-4 p-4">
+    <h1 class="mb-3 fw-bold text-primary text-center">Inventario</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-primary rounded-pill" (click)="toggleFilters()" >
+        <i class="bi bi-funnel"></i> {{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }}
+      </button>
+      <button class="btn btn-primary rounded-pill px-4">
+        <i class="bi bi-plus-lg"></i> Agregar artículo
+      </button>
+    </div>
+    <div *ngIf="showFilters" class="bg-white p-3 rounded-4 shadow-sm mb-4">
+      <div class="row g-3 mb-4 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="filters.nombre" (ngModelChange)="onFilterChange()" placeholder="Nombre">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Descripción</label>
+          <input type="text" class="form-control" [(ngModel)]="filters.descripcion" (ngModelChange)="onFilterChange()" placeholder="Descripción">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Estado</label>
+          <select class="form-select" [(ngModel)]="filters.estado" (change)="onEstadoChange()">
+            <option value="TODOS">Todos</option>
+            <option value="ACTIVO"  >Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Precio mín</label>
+          <input type="number" class="form-control" placeholder="Precio mínimo" (input)="onPrecioMinInput($event)">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Precio máx</label>
+          <input type="number" class="form-control" placeholder="Precio máximo" (input)="onPrecioMaxInput($event)" >
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mb-3 gap-3">
+        <select #orderSelect class="form-select w-auto" (change)="onSortChange(orderSelect.value)">
+          <option value="">Más recientes</option>
+          <option value="precio:asc">Precio menor</option>
+          <option value="precio:desc">Precio mayor</option>
+          <option value="nombre:asc">Nombre A–Z</option>
+          <option value="stock:asc">Stock menor</option>
+          <option value="stock:desc">Stock mayor</option>
+          <option value="total_vendido:desc">Más vendidos</option>
+          <option value="total_vendido:asc">Menos vendidos</option>
+        </select>
+        <select #limitSelect class="form-select w-auto" (change)="onLimitChange(limitSelect.value)">
+          <option value="9">9</option>
+          <option value="12">12</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-responsive rounded-3 overflow-auto">
+      <table class="table align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Total vendido</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let art of inventario()" class="row-hover align-middle">
+            <td class="fw-bold">{{ art.nombre }}</td>
+            <td class="fw-semibold">{{ art.descripcion }}</td>
+            <td>
+              <img *ngIf="art.imagen" [src]="API_CONFIG.hostUrl + art.imagen" alt="{{ art.nombre }}" class="art-thumb mt-2"/>
+            </td>
+            <td class="fw-bold">${{ art.precio }}</td>
+            <td class="fw-bold">{{ art.stock }}</td>
+            <td class="fw-bold">{{ art.total_vendido }}</td>
+            <td class="text-center">
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-primary rounded-pill fw-semibold shadow-sm action-btn mod-btn">
+                  <i class="bi bi-pencil"></i>Modificar
+                </button>
+                <button class="btn btn-sm btn-danger rounded-pill fw-semibold shadow-sm action-btn del-btn">
+                  <i class="bi bi-trash"></i>Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

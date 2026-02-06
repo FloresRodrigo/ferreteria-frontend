@@ -7,11 +7,13 @@ import { ResetPassword } from './components/reset-password/reset-password';
 import { AuthGuard } from './services/auth-guard';
 import { GuestGuard } from './services/guest-guard';
 import { AdminGuard } from './services/admin-guard';
+import { Inventario } from './components/inventario/inventario';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'registro', canActivate: [GuestGuard], component: Registro },
   { path: 'login', canActivate: [GuestGuard], component: Login },
   { path: 'forgot-password', canActivate: [GuestGuard], component: ForgotPassword },
-  { path: 'reset-password', canActivate: [GuestGuard], component: ResetPassword }
+  { path: 'reset-password', canActivate: [GuestGuard], component: ResetPassword },
+  { path: 'inventario', canActivate: [AdminGuard], component: Inventario }
 ];
