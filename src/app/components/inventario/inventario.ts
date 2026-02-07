@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Articulo as ArticuloService} from '../../services/articulo';
 import { Articulo as ArticuloModel} from '../../models/articulo';
 import { API_CONFIG } from '../../api.config';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inventario',
@@ -14,6 +15,13 @@ import { API_CONFIG } from '../../api.config';
 export class Inventario implements OnInit{
   API_CONFIG = API_CONFIG;
   inventario = signal<ArticuloModel[]>([]);
+  pagination = signal<any>({
+    page: 1,
+    limit: 9,
+    total: 0,
+    totalPages: 0,
+    hasMore: false
+  });
   filters: any = {
     nombre: '',
     descripcion: '',
@@ -23,7 +31,9 @@ export class Inventario implements OnInit{
   };
   showFilters = false;
 
-  constructor(private articuloService: ArticuloService) {};
+  constructor(private articuloService: ArticuloService,
+              private router: Router
+  ) {};
   
   ngOnInit(): void {
     this.getInventario();
@@ -39,6 +49,7 @@ export class Inventario implements OnInit{
         this.inventario.set(result.data.articulos.map((element:any) => {
           return Object.assign(new ArticuloModel(), element);
         }));
+        this.pagination.set(result.data.pagination);
       }, (error:any) => {
         alert(error.error.msg || "Error del servidor");
       }
@@ -98,5 +109,51 @@ export class Inventario implements OnInit{
 
   toggleFilters() {
     this.showFilters = !this.showFilters;
+  };
+
+  prevPage() {
+    if(this.filters.page <= 1) {
+      return;
+    };
+    this.filters.page--;
+    this.getInventario();
+  };
+
+  nextPage() {
+    if(!this.pagination().hasMore) {
+      return;
+    };
+    this.filters.page++;
+    this.getInventario();
+  };
+
+  createArticulo() {
+    if(!confirm('¿Crear articulo?')) {
+      return;
+    };
+    this.router.navigateByUrl('/inventario-form');
+  };
+
+  updateArticulo(id:string) {
+    if(!confirm('¿Editar articulo?')) {
+      return;
+    };
+    this.router.navigate(['inventario-form', id]);
+  };
+
+  deleteArticulo(id:string) {
+    if(!confirm('¿Eliminar articulo?')) {
+      return;
+    };
+    this.articuloService.deleteArticulo(id).subscribe(
+      (result:any) => {
+        this.getInventario();
+        alert(result.msg);
+      },
+      (error:any) => {
+        console.error(error);
+        alert(error.error.msg || "Error del servidor");
+      }
+    );
   };
 }

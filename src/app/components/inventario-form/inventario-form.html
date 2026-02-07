@@ -1,0 +1,61 @@
+<main class="d-flex justify-content-center align-items-center py-5">
+  <div class="form shadow-sm p-4 p-md-5 rounded bg-white border-0 inventario-card">
+    <h3 class="text-center mb-4 fw-bold text-primary">
+      {{ isEdit() ? 'Editar artículo' : 'Nuevo artículo' }}
+    </h3>
+    <form #f="ngForm" (ngSubmit)="submit()">
+      <div class="input mb-3">
+        <label class="form-label fw-semibold" for="nombre">Nombre</label>
+        <input [(ngModel)]="articulo.nombre" name="nombre" id="nombre" #nombreModel="ngModel" class="form-control"
+          required minlength="3" />
+        <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
+          Ingrese al menos 3 caracteres
+        </div>
+      </div>
+      <div class="input mb-3">
+        <label class="form-label fw-semibold" for="descripcion">Descripción</label>
+        <textarea [(ngModel)]="articulo.descripcion" name="descripcion" id="descripcion" #descModel="ngModel"
+          class="form-control" minlength="10" rows="3"></textarea>
+        <div class="text-danger small mt-1" *ngIf="descModel.invalid && descModel.touched">
+          Ingrese al menos 10 caracteres
+        </div>
+      </div>
+      <div class="input mb-3">
+        <label class="form-label fw-semibold" for="precio">Precio</label>
+        <input [(ngModel)]="articulo.precio" name="precio" id="precio" #precioModel="ngModel" type="number"
+          class="form-control" required min="0" />
+        <div class="text-danger small mt-1" *ngIf="precioModel.invalid && precioModel.touched">
+          Ingrese un precio valido
+        </div>
+      </div>
+      <div class="input mb-3">
+        <label class="form-label fw-semibold" for="stock">Stock</label>
+        <input [(ngModel)]="articulo.stock" name="stock" id="stock" #stockModel="ngModel" type="number"
+          class="form-control" required min="0" />
+        <div class="text-danger small mt-1" *ngIf="stockModel.invalid && stockModel.touched">
+          Ingrese un stock valido
+        </div>
+      </div>
+      <div class="input mb-3" *ngIf="isEdit()">
+        <label class="form-label fw-semibold" for="estado">Estado</label>
+        <select [(ngModel)]="articulo.estado" name="estado" id="estado" #estadoModel="ngModel"
+          class="form-select custom-select" required>
+          <option value="ACTIVO">Activo</option>
+          <option value="INACTIVO">Inactivo</option>
+        </select>
+        <div class="text-danger small mt-1" *ngIf="estadoModel.invalid && estadoModel.touched">
+          Seleccione un estado
+        </div>
+      </div>
+      <div class="input mb-4">
+        <label class="form-label fw-semibold" for="imagen">Imagen</label>
+        <input type="file" class="form-control" id="imagen" (change)="onFileChange($event)" [required]="!isEdit()" />
+      </div>
+      <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm rounded-pill"
+        [disabled]="loading() || f.invalid"> {{ loading() ? 'Guardando…' : (isEdit() ? 'Actualizar artículo' : 'Crear artículo') }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary w-100 py-2 fw-semibold rounded-pill mt-3"
+        (click)="cancelar()" [disabled]="loading()">Cancelar</button>
+    </form>
+  </div>
+</main>

@@ -8,6 +8,7 @@ import { AuthGuard } from './services/auth-guard';
 import { GuestGuard } from './services/guest-guard';
 import { AdminGuard } from './services/admin-guard';
 import { Inventario } from './components/inventario/inventario';
+import { InventarioForm } from './components/inventario-form/inventario-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,5 +16,7 @@ export const routes: Routes = [
   { path: 'login', canActivate: [GuestGuard], component: Login },
   { path: 'forgot-password', canActivate: [GuestGuard], component: ForgotPassword },
   { path: 'reset-password', canActivate: [GuestGuard], component: ResetPassword },
-  { path: 'inventario', canActivate: [AdminGuard], component: Inventario }
+  { path: 'inventario', canActivate: [AdminGuard], component: Inventario },
+  { path: 'inventario-form', canActivate: [AdminGuard], component: InventarioForm},
+  { path: 'inventario-form/:id', canActivate: [AdminGuard], component: InventarioForm}
 ];
