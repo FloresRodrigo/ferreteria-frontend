@@ -4,6 +4,7 @@ export const API_CONFIG = {
 
     endpoints: {
         auth: 'auth',
-        articulo: 'articulo'
+        articulo: 'articulo',
+        ticket: 'ticket'
     }
 }

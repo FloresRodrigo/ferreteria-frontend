@@ -1,0 +1,52 @@
+<main class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">Tu Carrito</h1>
+  </div>
+  <div *ngIf="carrito().length === 0"
+    class="empty-cart-box d-flex flex-column justify-content-center align-items-center text-center">
+    <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
+    <h4>Tu carrito está vacío</h4>
+    <p>Agregá productos desde la tienda para verlos aquí</p>
+    <a routerLink="/compra" class="btn btn-primary mt-3">Ir a comprar</a>
+  </div>
+  <div *ngIf="carrito().length > 0" class="row">
+    <section class="col-lg-8 mb-4">
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-outline-danger btn-sm" (click)="vaciarCarrito()">
+          <i class="bi bi-trash"></i> Vaciar carrito
+        </button>
+      </div>
+      <div *ngFor="let item of carrito()" class="list-card align-items-center mb-3">
+        <img [src]="API_CONFIG.hostUrl + item.imagen" class="list-card-img" *ngIf="item.imagen">
+        <div class="flex-grow-1 ps-3">
+          <h6 class="fw-bold">{{ item.nombre }}</h6>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <button class="btn btn-sm btn-primary" (click)="restar(item.id)">-</button>
+            <span>{{ item.cantidad }}</span>
+            <button class="btn btn-sm btn-primary" (click)="sumar(item.id)">+</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminar(item.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="text-end price-box">
+          <div class="price-total">
+            ${{ item.cantidad * item.precio }}
+          </div>
+          <div class="price-unit">
+            ${{ item.precio }} c/u
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="col-lg-4">
+      <div class="sticky-top summary-box p-3">
+        <h5 class="fw-bold text-primary text-center">Resumen</h5>
+        <p>Productos: <strong>{{ totalCantidad() }}</strong></p>
+        <p>Total: <strong>${{ totalPrecio() }}</strong></p>
+        <button class="btn btn-primary w-100 mb-2">Confirmar compra</button>
+        <a routerLink="/compra" class="btn btn-outline-primary w-100">Ver más productos</a>
+      </div>
+    </aside>
+  </div>
+</main>

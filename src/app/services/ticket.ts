@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+import { API_CONFIG } from '../api.config';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Ticket {
+  private url = API_CONFIG.baseUrl+'/'+API_CONFIG.endpoints.ticket;
+
+  constructor(private _http: HttpClient) {};
+
+  public createTicket(carrito:any): Observable<any> {
+    return this._http.post(this.url, { carrito });
+  };
+}

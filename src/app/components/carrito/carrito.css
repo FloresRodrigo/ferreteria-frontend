@@ -1,0 +1,107 @@
+.list-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 142, 255, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 142, 255, 0.25);
+}
+
+.list-card-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.summary-box {
+  background-color: #e7f0f7;
+  border-radius: 12px;
+  border: 1px solid #c0d4e0;
+  padding: 1rem;
+}
+
+.summary-box h5,
+.summary-box p {
+  color: #000;
+}
+
+.quantity-control button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-outline-danger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-box {
+  min-width: 110px;
+}
+
+.price-total {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.price-unit {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.summary-box {
+  top: 100px;
+}
+
+.empty-cart-box {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 520px;
+  margin: 0 auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 575px) {
+
+  .list-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .list-card-img {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 0.75rem;
+  }
+
+  .list-card .flex-grow-1 {
+    padding-left: 0 !important;
+  }
+
+  .list-card .text-end {
+    text-align: center !important;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .summary-box {
+    margin-top: 52px;
+  }
+}

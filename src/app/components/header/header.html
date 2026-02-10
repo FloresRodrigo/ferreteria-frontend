@@ -30,7 +30,7 @@
             <a class="nav-link fw-semibold nav-animated-item" routerLink="/compra"
               [ngClass]="{'active': isActive('/compra')}"
               (mouseenter)="onMouseEnter('/compra')" (mouseleave)="onMouseLeave()">
-              <i class="bi bi-cart3 nav-icon"></i>
+              <i class="bi bi-bag nav-icon"></i>
               <span class="nav-text">Compras</span>
             </a>
           </li>
@@ -62,6 +62,14 @@
                 </button>
               </li>
             </ul>
+          </li>
+          <li *ngIf="isLogged() && !isAdmin()" class="nav-item">
+            <button class="btn position-relative text-white p-0 border-0 bg-transparent" routerLink="/carrito">
+              <i class="bi bi-cart3 fs-4"></i>
+              <span *ngIf="cantidadCarrito() > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cantidadCarrito() }}
+              </span>
+            </button>
           </li>
         </ul>
       </div>

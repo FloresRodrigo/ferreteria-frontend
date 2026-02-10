@@ -151,7 +151,6 @@ export class Inventario implements OnInit{
         alert(result.msg);
       },
       (error:any) => {
-        console.error(error);
         alert(error.error.msg || "Error del servidor");
       }
     );

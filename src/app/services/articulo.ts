@@ -15,8 +15,8 @@ export class Articulo {
     return this._http.get(this.url+'/top10');
   };
 
-  public getArticulos(): Observable<any> {
-    return this._http.get(this.url);
+  public getArticulos(params?:any): Observable<any> {
+    return this._http.get(this.url, { params: params || {} });
   };
 
   public getInventario(params:any):Observable<any> {

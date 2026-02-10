@@ -1,0 +1,98 @@
+<main class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">Compras</h1>
+    <p class="text-muted">Explorá nuestros productos y agregalos a tu carrito</p>
+  </div>
+  <div class="row">
+    <aside class="col-lg-3 mb-4">
+      <div class="filters-offset"></div>
+      <div class="bg-white rounded-4 shadow-sm p-3 filters-box sticky-top">
+        <h5 class="fw-bold text-primary mb-3">Filtros</h5>
+        <div class="mb-3">
+          <label class="form-label" for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="filters.nombre"
+            (ngModelChange)="onFilterChange()" placeholder="Nombre">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="descripcion">Descripción</label>
+          <input type="text" class="form-control" id="descripcion" [(ngModel)]="filters.descripcion"
+            (ngModelChange)="onFilterChange()" placeholder="Descripción">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="precioMin">Precio mínimo</label>
+          <input type="number" class="form-control" id="precioMin"
+            (input)="filters.precioMin = $any($event.target).value || null; onFilterChange()"
+            placeholder="Precio mínimo">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="precioMax">Precio máximo</label>
+          <input type="number" class="form-control" id="precioMax"
+            (input)="filters.precioMax = $any($event.target).value || null; onFilterChange()"
+            placeholder="Precio máximo">
+        </div>
+      </div>
+    </aside>
+    <section class="col-lg-9">
+      <div class="d-flex justify-content-end align-items-center mb-4 flex-wrap gap-2">
+        <select class="form-select form-select-sm w-auto" id="orden" (change)="onSortChange($any($event.target).value)">
+          <option value="">Más recientes</option>
+          <option value="precio:asc">Menor precio</option>
+          <option value="precio:desc">Mayor precio</option>
+          <option value="nombre:asc">Nombre A–Z</option>
+        </select>
+        <div class="btn-group">
+          <button class="btn btn-outline-primary" [class.active]="vista === 'grid'" (click)="vista = 'grid'">
+            <i class="bi bi-grid-3x3-gap"></i>
+          </button>
+          <button class="btn btn-outline-primary" [class.active]="vista === 'list'" (click)="vista = 'list'">
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row g-4" *ngIf="vista === 'grid'">
+        <div class="col-md-6 col-lg-4" *ngFor="let art of articulos()">
+          <div class="product-card h-100">
+            <img *ngIf="art.imagen" [src]="API_CONFIG.hostUrl + art.imagen" class="product-img">
+            <div class="p-3">
+              <h6 class="fw-bold">{{ art.nombre }}</h6>
+              <p class="text-muted small product-desc">{{ art.descripcion }}</p>
+              <p class="text-primary fw-bold">${{ art.precio }}</p>
+              <div class="text-center">
+                <button *ngIf="getCantidadCarrito(art._id) === 0" class="btn btn-primary rounded-pill w-100"
+                  (click)="sumar(art._id)">
+                  Agregar al carrito
+                </button>
+                <div *ngIf="getCantidadCarrito(art._id) > 0" class="quantity-control">
+                  <button (click)="restar(art._id)">-</button>
+                  <span>{{ getCantidadCarrito(art._id) }}</span>
+                  <button (click)="sumar(art._id)">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="vista === 'list'" class="list-view">
+        <div class="list-card" *ngFor="let art of articulos()">
+          <img *ngIf="art.imagen" [src]="API_CONFIG.hostUrl + art.imagen">
+          <div class="flex-grow-1">
+            <h6 class="fw-bold">{{ art.nombre }}</h6>
+            <p class="text-muted small">{{ art.descripcion }}</p>
+            <p class="fw-bold text-primary">${{ art.precio }}</p>
+          </div>
+          <div>
+            <button *ngIf="getCantidadCarrito(art._id) === 0" class="btn btn-primary rounded-pill"
+              (click)="sumar(art._id)">
+              Agregar
+            </button>
+            <div *ngIf="getCantidadCarrito(art._id) > 0" class="quantity-control">
+              <button (click)="restar(art._id)">-</button>
+              <span>{{ getCantidadCarrito(art._id) }}</span>
+              <button (click)="sumar(art._id)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

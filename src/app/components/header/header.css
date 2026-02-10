@@ -169,3 +169,7 @@
 .nav-animated-item.active .nav-text {
   color: #ffffff !important;
 }
+
+button:hover i {
+  color: #00bcff;
+}

@@ -66,23 +66,23 @@
         <thead class="table-light">
           <tr>
             <th>Producto</th>
-            <th>Descripción</th>
             <th>Imagen</th>
             <th>Precio</th>
             <th>Stock</th>
             <th>Total vendido</th>
+            <th>Estado</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let art of inventario()" class="row-hover align-middle">
             <td class="fw-bold">{{ art.nombre }}</td>
-            <td class="fw-semibold">{{ art.descripcion }}</td>
             <td><img *ngIf="art.imagen" [src]="API_CONFIG.hostUrl + art.imagen" alt="{{ art.nombre }}"
                 class="art-thumb mt-2"></td>
             <td class="fw-bold">${{ art.precio }}</td>
             <td class="fw-bold">{{ art.stock }}</td>
             <td class="fw-bold">{{ art.total_vendido }}</td>
+            <td class="fw-bold">{{ art.estado }}</td>
             <td class="text-center">
               <div class="action-buttons">
                 <button class="btn btn-sm btn-primary rounded-pill fw-semibold shadow-sm action-btn mod-btn"
