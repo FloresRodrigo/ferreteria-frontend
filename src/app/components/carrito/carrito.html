@@ -44,9 +44,61 @@
         <h5 class="fw-bold text-primary text-center">Resumen</h5>
         <p>Productos: <strong>{{ totalCantidad() }}</strong></p>
         <p>Total: <strong>${{ totalPrecio() }}</strong></p>
-        <button class="btn btn-primary w-100 mb-2">Confirmar compra</button>
+        <button class="btn btn-primary w-100 mb-2" (click)="confirmarCompra()">Confirmar compra</button>
         <a routerLink="/compra" class="btn btn-outline-primary w-100">Ver más productos</a>
       </div>
     </aside>
+  </div>
+  <div class="modal-backdrop-custom" *ngIf="mostrarModal()">
+    <div class="ticket-modal">
+      <button class="ticket-close-btn" (click)="mostrarModal.set(false)">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <div class="ticket-header">
+        <i class="bi bi-check-circle-fill text-primary fs-1"></i>
+        <h4 class="fw-bold mt-2">Compra confirmada</h4>
+      </div>
+      <div class="ticket-body" *ngIf="ticket() as t">
+        <div class="ticket-meta">
+          <div><strong>Ticket Nº</strong> {{ t.nro_ticket }}</div>
+          <div class="text-muted">
+            {{ t.fecha_compra | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+        </div>
+        <div class="ticket-divider"></div>
+        <div class="ticket-item" *ngFor="let d of t.detalles_ticket">
+          <div class="ticket-item-row">
+            <div class="ticket-item-info">
+              <div class="fw-semibold">{{ d.nombre_articulo }}</div>
+              <div class="text-muted small">
+                {{ d.cantidad }} × ${{ d.precio_unitario }}
+              </div>
+            </div>
+            <div class="ticket-item-price">
+              ${{ d.cantidad * d.precio_unitario }}
+            </div>
+          </div>
+        </div>
+        <div class="ticket-divider"></div>
+        <div class="ticket-total">
+          <span>Total</span>
+          <span>${{ t.total }}</span>
+        </div>
+        <button class="btn btn-primary w-100 mt-3" (click)="pagarTicket()" [disabled]="loading() || linkPago()">
+          {{ loading() ? "Procesando..." : "Pagar" }}
+        </button>
+        <div *ngIf="linkPago()" class="payment-info mt-3">
+          <p class="fw-semibold mb-1">
+            Para pagar, ingresá al siguiente enlace:
+          </p>
+          <a [href]="linkPago()" target="_blank">
+            {{ linkPago() }}
+          </a>
+          <p class="text-muted small mt-2 mb-0">
+            Al completar el pago, serás redirigido automáticamente.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </main>

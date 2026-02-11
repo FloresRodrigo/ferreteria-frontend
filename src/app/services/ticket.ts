@@ -14,4 +14,8 @@ export class Ticket {
   public createTicket(carrito:any): Observable<any> {
     return this._http.post(this.url, { carrito });
   };
+
+  public pagarTicket(id:string): Observable<any> {
+    return this._http.post(this.url+'/'+id+'/pagar', {});
+  };
 }

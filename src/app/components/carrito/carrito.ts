@@ -4,6 +4,8 @@ import { API_CONFIG } from '../../api.config';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
+import { Ticket as TicketService } from '../../services/ticket';
+import { Ticket as TicketModel } from '../../models/ticket';
 
 @Component({
   selector: 'app-carrito',
@@ -16,8 +18,14 @@ export class Carrito implements OnInit, OnDestroy {
   carrito = signal<any[]>([]);
   totalCantidad = signal<number>(0);
   totalPrecio = signal<number>(0);
+  ticket = signal<TicketModel | null>(null);
+  mostrarModal = signal<boolean>(false);
+  linkPago = signal<string | null>(null);
+  loading = signal<boolean>(false);
 
-  constructor(private articuloService: ArticuloService) { };
+  constructor(private articuloService: ArticuloService,
+              private ticketService: TicketService
+  ) {};
 
   ngOnInit(): void {
     this.cargarCarrito();
@@ -107,5 +115,43 @@ export class Carrito implements OnInit, OnDestroy {
 
   carritoHandler = () => {
     this.cargarCarrito();
+  };
+
+  confirmarCompra() {
+    const carrito = this.carrito().map(item => ({ id: item.id, cantidad: item.cantidad }));
+    if(!carrito.length) {
+      alert("El carrito esta vacio");
+      return;
+    };
+    this.ticketService.createTicket(carrito).subscribe(
+      (result:any) => {
+        this.ticket.set(Object.assign(new TicketModel(), result.data));
+        this.mostrarModal.set(true);
+        this.carrito.set([]);
+        sessionStorage.removeItem('carrito');
+        window.dispatchEvent(new Event('carritoActualizado'));
+      },
+      (error:any) => {
+        alert(error.error.msg || "Error del servidor")
+      }
+    );
+  };
+
+  pagarTicket() {
+    const ticket = this.ticket();
+    if(!ticket) {
+      return;
+    };
+    this.loading.set(true);
+    this.ticketService.pagarTicket(ticket._id).subscribe(
+      (result:any) => {
+        this.loading.set(false);
+        this.linkPago.set(result.data);
+      },
+      (error:any) => {
+        this.loading.set(false);
+        alert(error.error.msg || "Error del servidor");
+      }
+    );
   };
 }

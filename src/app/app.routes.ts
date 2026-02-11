@@ -11,6 +11,7 @@ import { Inventario } from './components/inventario/inventario';
 import { InventarioForm } from './components/inventario-form/inventario-form';
 import { Compra } from './components/compra/compra';
 import { Carrito } from './components/carrito/carrito';
+import { Pago } from './components/pago/pago';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'inventario-form', canActivate: [AdminGuard], component: InventarioForm},
   { path: 'inventario-form/:id', canActivate: [AdminGuard], component: InventarioForm},
   { path: 'compra', canActivate: [AuthGuard], component: Compra},
-  { path: 'carrito', canActivate: [AuthGuard], component: Carrito}
+  { path: 'carrito', canActivate: [AuthGuard], component: Carrito},
+  { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago}
 ];

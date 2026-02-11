@@ -1,0 +1,26 @@
+.pago-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 22px rgba(0, 142, 255, 0.18);
+}
+
+.pago-icon {
+  font-size: 4rem;
+}
+
+.pago-actions button,
+.pago-actions a {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+@media (max-width: 575px) {
+  .pago-card {
+    padding: 1.5rem;
+  }
+
+  .pago-icon {
+    font-size: 3.2rem;
+  }
+}
