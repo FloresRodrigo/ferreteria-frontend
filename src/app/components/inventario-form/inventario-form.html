@@ -7,7 +7,7 @@
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="nombre">Nombre</label>
         <input [(ngModel)]="articulo.nombre" name="nombre" id="nombre" #nombreModel="ngModel" class="form-control"
-          required minlength="3" />
+          required minlength="3"/>
         <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
           Ingrese al menos 3 caracteres
         </div>
@@ -23,7 +23,7 @@
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="precio">Precio</label>
         <input [(ngModel)]="articulo.precio" name="precio" id="precio" #precioModel="ngModel" type="number"
-          class="form-control" required min="0" />
+          class="form-control" required min="0"/>
         <div class="text-danger small mt-1" *ngIf="precioModel.invalid && precioModel.touched">
           Ingrese un precio valido
         </div>
@@ -31,7 +31,7 @@
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="stock">Stock</label>
         <input [(ngModel)]="articulo.stock" name="stock" id="stock" #stockModel="ngModel" type="number"
-          class="form-control" required min="0" />
+          class="form-control" required min="0"/>
         <div class="text-danger small mt-1" *ngIf="stockModel.invalid && stockModel.touched">
           Ingrese un stock valido
         </div>
@@ -49,7 +49,7 @@
       </div>
       <div class="input mb-4">
         <label class="form-label fw-semibold" for="imagen">Imagen</label>
-        <input type="file" class="form-control" id="imagen" (change)="onFileChange($event)" [required]="!isEdit()" />
+        <input type="file" class="form-control" id="imagen" (change)="onFileChange($event)" [required]="!isEdit()"/>
       </div>
       <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm rounded-pill"
         [disabled]="loading() || f.invalid"> {{ loading() ? 'Guardando…' : (isEdit() ? 'Actualizar artículo' : 'Crear artículo') }}

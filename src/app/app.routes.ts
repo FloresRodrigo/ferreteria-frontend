@@ -12,6 +12,7 @@ import { InventarioForm } from './components/inventario-form/inventario-form';
 import { Compra } from './components/compra/compra';
 import { Carrito } from './components/carrito/carrito';
 import { Pago } from './components/pago/pago';
+import { Perfil } from './components/perfil/perfil';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -20,9 +21,10 @@ export const routes: Routes = [
   { path: 'forgot-password', canActivate: [GuestGuard], component: ForgotPassword },
   { path: 'reset-password', canActivate: [GuestGuard], component: ResetPassword },
   { path: 'inventario', canActivate: [AdminGuard], component: Inventario },
-  { path: 'inventario-form', canActivate: [AdminGuard], component: InventarioForm},
-  { path: 'inventario-form/:id', canActivate: [AdminGuard], component: InventarioForm},
-  { path: 'compra', canActivate: [AuthGuard], component: Compra},
-  { path: 'carrito', canActivate: [AuthGuard], component: Carrito},
-  { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago}
+  { path: 'inventario-form', canActivate: [AdminGuard], component: InventarioForm },
+  { path: 'inventario-form/:id', canActivate: [AdminGuard], component: InventarioForm },
+  { path: 'compra', canActivate: [AuthGuard], component: Compra },
+  { path: 'carrito', canActivate: [AuthGuard], component: Carrito },
+  { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago },
+  { path: 'mi-perfil', canActivate: [AuthGuard], component: Perfil }
 ];

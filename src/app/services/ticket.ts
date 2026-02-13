@@ -18,4 +18,16 @@ export class Ticket {
   public pagarTicket(id:string): Observable<any> {
     return this._http.post(this.url+'/'+id+'/pagar', {});
   };
+
+  public getMyTickets(): Observable<any> {
+    return this._http.get(this.url+'/my-tickets');
+  };
+
+  public getMyTicket(id:string): Observable<any> {
+    return this._http.get(this.url+'/my-tickets/'+id);
+  };
+
+  public cancelarTicket(id:string): Observable<any> {
+    return this._http.put(this.url+'/cancelar/'+id, {});
+  };
 }

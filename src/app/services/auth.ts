@@ -28,14 +28,14 @@ export class Auth {
   };
 
   public persistirSesion(usuario:any) {
-    sessionStorage.setItem('nombre_completo', usuario.nombre_completo);
-    sessionStorage.setItem('username', usuario.username);
-    sessionStorage.setItem('email', usuario.email);
-    sessionStorage.setItem('token', usuario.token)
+    localStorage.setItem('nombre_completo', usuario.nombre_completo);
+    localStorage.setItem('username', usuario.username);
+    localStorage.setItem('email', usuario.email);
+    localStorage.setItem('token', usuario.token)
   };
 
   public getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   };
 
   public isLogged(): boolean {
@@ -43,15 +43,15 @@ export class Auth {
   };
 
   private loggedUsername(): string | null {
-    return sessionStorage.getItem('username');
+    return localStorage.getItem('username');
   };
 
   private loggedEmail(): string | null {
-    return sessionStorage.getItem('email');
+    return localStorage.getItem('email');
   };
 
   private loggedNombre(): string | null {
-    return sessionStorage.getItem('nombre_completo');
+    return localStorage.getItem('nombre_completo');
   };
 
   public userLogged() {
@@ -63,11 +63,11 @@ export class Auth {
   };
 
   public logout(): void {
-    sessionStorage.removeItem('nombre_completo');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('carrito');
+    localStorage.removeItem('nombre_completo');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
+    localStorage.removeItem('carrito');
   };
 
   private decodeToken(): any | null {

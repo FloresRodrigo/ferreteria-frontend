@@ -173,3 +173,43 @@
 button:hover i {
   color: #00bcff;
 }
+
+.nav-cart {
+  position: relative;
+  overflow: visible !important;
+}
+
+.nav-cart::after {
+  display: none !important;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  pointer-events: none;
+  font-size: 0.7rem;
+  z-index: 5;
+}
+
+.cart-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+@media (min-width: 992px) {
+  .nav-cart:hover .cart-icon-wrapper {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .nav-cart .cart-badge {
+    right: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
