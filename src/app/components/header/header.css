@@ -213,3 +213,20 @@ button:hover i {
     transform: translateY(-50%);
   }
 }
+
+.nav-item.dropdown .nav-link.active {
+  background-color: transparent !important;
+  color: #00bcff !important;
+  border-radius: 0 !important;
+}
+
+.nav-item.dropdown .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #00bcff;
+  transition: width 0.3s ease;
+}

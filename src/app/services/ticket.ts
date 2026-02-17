@@ -30,4 +30,12 @@ export class Ticket {
   public cancelarTicket(id:string): Observable<any> {
     return this._http.put(this.url+'/cancelar/'+id, {});
   };
+
+  public getTickets(params:any): Observable<any> {
+    return this._http.get(this.url, { params });
+  };
+
+  public getTicket(id:string): Observable<any> {
+    return this._http.get(this.url+'/'+id);
+  };
 }

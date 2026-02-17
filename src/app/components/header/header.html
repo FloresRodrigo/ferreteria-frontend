@@ -49,15 +49,17 @@
           </li>
           <li *ngIf="isLogged()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" role="button"
-              data-bs-toggle="dropdown">
+              data-bs-toggle="dropdown" [ngClass]="{ 'active': isActive('/admin') || isActive('/mi-perfil') }">
               <i class="bi bi-person-circle me-2 fs-5 d-none d-lg-inline"></i>
               <span *ngIf="authService.userLogged() as user">{{ user.email }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-              <li>
-                <a class="dropdown-item fw-semibold d-flex align-items-center" routerLink="/mi-perfil">
-                  <i class="bi bi-person me-1"></i>
-                  <span>Mi perfil</span>
+              <li *ngIf="isLogged()">
+                <a class="dropdown-item fw-semibold d-flex align-items-center"
+                  [routerLink]="isAdmin() ? '/admin' : '/mi-perfil'">
+                  <i class="bi bi-speedometer2 me-1" *ngIf="isAdmin()"></i>
+                  <i class="bi bi-person me-1" *ngIf="!isAdmin()"></i>
+                  <span>{{ isAdmin() ? 'Panel admin' : 'Mi perfil' }}</span>
                 </a>
               </li>
               <li>

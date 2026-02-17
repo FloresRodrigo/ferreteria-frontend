@@ -13,6 +13,7 @@ import { Compra } from './components/compra/compra';
 import { Carrito } from './components/carrito/carrito';
 import { Pago } from './components/pago/pago';
 import { Perfil } from './components/perfil/perfil';
+import { Admin } from './components/admin/admin';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'compra', canActivate: [AuthGuard], component: Compra },
   { path: 'carrito', canActivate: [AuthGuard], component: Carrito },
   { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago },
-  { path: 'mi-perfil', canActivate: [AuthGuard], component: Perfil }
+  { path: 'mi-perfil', canActivate: [AuthGuard], component: Perfil },
+  { path: 'admin', canActivate: [AdminGuard], component: Admin }
 ];

@@ -67,7 +67,7 @@ export class Auth {
     localStorage.removeItem('username');
     localStorage.removeItem('email');
     localStorage.removeItem('token');
-    localStorage.removeItem('carrito');
+    sessionStorage.removeItem('carrito');
   };
 
   private decodeToken(): any | null {

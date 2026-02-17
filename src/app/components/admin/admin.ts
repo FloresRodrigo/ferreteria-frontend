@@ -1,19 +1,19 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Usuario as UsuarioService } from '../../services/usuario';
-import { Ticket as TicketService} from '../../services/ticket';
-import { Usuario as UsuarioModel} from '../../models/usuario';
+import { Ticket as TicketService } from '../../services/ticket';
+import { Usuario as UsuarioModel } from '../../models/usuario';
 import { Ticket as TicketModel } from '../../models/ticket';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-perfil',
+  selector: 'app-admin',
   imports: [ CommonModule, FormsModule ],
-  templateUrl: './perfil.html',
-  styleUrl: './perfil.css',
+  templateUrl: './admin.html',
+  styleUrl: './admin.css',
 })
-export class Perfil implements OnInit {
-  pestanaActiva = signal<'perfil' | 'tickets'>('perfil');
+export class Admin {
+  pestanaActiva = signal<'perfil' | 'tickets' | 'usuarios'>('perfil');
   loading = signal<boolean>(false);
   usuario = signal<UsuarioModel>(new UsuarioModel());
   editNombre = signal<boolean>(false);
@@ -27,29 +27,42 @@ export class Perfil implements OnInit {
   repeatNewPassword = signal<string>('');
   tickets = signal<TicketModel[]>([]);
   ticket = signal<TicketModel | null>(null);
-  linkPago = signal<string | null>(null);
   mostrarModal = signal<boolean>(false);
   mostrarPassword = signal<boolean>(false);
+  usuarios = signal<UsuarioModel[]>([]);
+  usuarioSelect = signal<string>('');
+  usuarioSeleccionado = signal<UsuarioModel | null>(null);
+  usuarioTemporal = signal<UsuarioModel | null>(null);
+  passwordTemporal = signal<string>('');
+  mostrarModalUsuario = signal<boolean>(false);
+  mostrarModalEditar = signal<boolean>(false);
+  filters: any = {
+    nombre_completo: '',
+    username: '',
+    email: '',
+    estado: 'TODOS'
+  }
 
   constructor(private usuarioService: UsuarioService,
-              private ticketService: TicketService
-  ) {};
+    private ticketService: TicketService
+  ) { };
 
   ngOnInit(): void {
     this.cargarPerfil();
+    this.cargarUsuarios();
   }
 
   cargarPerfil() {
     this.loading.set(true);
     this.usuarioService.getMyProfile().subscribe(
-      (result:any) => {
+      (result: any) => {
         this.usuario.set(result.data);
         this.nombre_completo.set(result.data.nombre_completo);
         this.email.set(result.data.email);
         this.username.set(result.data.username);
         this.loading.set(false);
       },
-      (error:any) => {
+      (error: any) => {
         this.loading.set(false);
         alert(error.error.msg || "Error del servidor");
       }
@@ -74,15 +87,15 @@ export class Perfil implements OnInit {
     });
   };
 
-  private actualizarPerfil(body:any, cb?:() => void): void {
+  private actualizarPerfil(body: any, cb?: () => void): void {
     this.loading.set(true);
     this.usuarioService.updateMyProfile(body).subscribe(
-      (result:any) => {
+      (result: any) => {
         alert(result.msg);
         this.cargarPerfil();
         cb?.();
       },
-      (error:any) => {
+      (error: any) => {
         this.loading.set(false);
         alert(error.error.msg || "Error del servidor");
       }
@@ -107,14 +120,14 @@ export class Perfil implements OnInit {
   cambiarPassword() {
     this.loading.set(true);
     this.usuarioService.changeMyPassword(this.actualPassword(), this.newPassword(), this.repeatNewPassword()).subscribe(
-      (result:any) => {
+      (result: any) => {
         alert(result.msg);
         this.actualPassword.set('');
         this.newPassword.set('');
         this.repeatNewPassword.set('');
         this.loading.set(false);
       },
-      (error:any) => {
+      (error: any) => {
         this.loading.set(false);
         alert(error.error.msg || "Error del servidor");
       }
@@ -123,14 +136,18 @@ export class Perfil implements OnInit {
 
   cargarTickets() {
     this.loading.set(true);
-    this.ticketService.getMyTickets().subscribe(
-      (result:any) => {
-        this.tickets.set(result.data.map((element:any) => {
+    const params: any = {};
+    if (this.usuarioSelect()) {
+      params.id = this.usuarioSelect();
+    };
+    this.ticketService.getTickets(params).subscribe(
+      (result: any) => {
+        this.tickets.set(result.data.map((element: any) => {
           return Object.assign(new TicketModel(), element);
         }));
         this.loading.set(false);
       },
-      (error:any) => {
+      (error: any) => {
         this.loading.set(false);
         alert(error.error.msg || "Error del servidor");
       }
@@ -139,61 +156,102 @@ export class Perfil implements OnInit {
 
   verTicket(ticket: TicketModel) {
     this.ticket.set(ticket);
-    this.linkPago.set(null);
     this.mostrarModal.set(true);
   };
 
   cerrarTicket() {
     this.mostrarModal.set(false);
     this.ticket.set(null);
-    this.linkPago.set(null);
-  };
-  
-  pagarTicket() {
-    const ticket = this.ticket();
-    if(!ticket) {
-      return;
-    };
-    this.loading.set(true);
-    this.ticketService.pagarTicket(ticket._id).subscribe(
-      (result:any) => {
-        this.loading.set(false);
-        this.linkPago.set(result.data);
-      },
-      (error:any) => {
-        this.loading.set(false);
-        alert(error.error.msg || "Error del servidor");
-      }
-    );
   };
 
-  cancelarTicket() {
-    const ticket = this.ticket();
-    if (!ticket) {
-      return;
-    };
-    if(!confirm('¿Seguro que deseas cancelar este ticket?')){
-      return;
-    };
-    this.loading.set(true);
-    this.ticketService.cancelarTicket(ticket._id).subscribe(
-      (result:any) => {
-        this.loading.set(false);
-        alert(result.msg);
-        this.cerrarTicket();
-        this.cargarTickets();
-      },
-      (error:any) => {
-        this.loading.set(false);
-        alert(error.error.msg || "Error del servidor");
-      }
-    );
-  };
-
-  cambiarPestana(pestaña: 'perfil' | 'tickets'): void {
+  cambiarPestana(pestaña: 'perfil' | 'tickets' | 'usuarios'): void {
     this.pestanaActiva.set(pestaña);
-    if(pestaña === 'tickets' && this.tickets().length === 0) {
+    if (pestaña === 'tickets' && this.tickets().length === 0) {
       this.cargarTickets();
     };
+    if (pestaña === 'usuarios' && this.usuarios().length === 0) {
+      this.cargarUsuarios();
+    };
+  };
+
+  cargarUsuarios() {
+    const params: any = { ...this.filters };
+    if (params.estado === 'TODOS') {
+      delete params.estado;
+    };
+    this.usuarioService.getUsuarios(params).subscribe(
+      (result: any) => {
+        this.usuarios.set(result.data.map((element: any) => {
+          return Object.assign(new UsuarioModel(), element);
+        }));
+      },
+      (error: any) => {
+        alert(error.error.msg || "Error del servidor");
+      }
+    );
+  };
+
+  onUsuarioFilterChange() {
+    this.cargarUsuarios();
+  };
+
+  mostrarUsuario(usuario: UsuarioModel) {
+    this.usuarioSeleccionado.set(usuario);
+    this.mostrarModalUsuario.set(true);
+    this.mostrarModalEditar.set(false);
+  };
+
+  cerrarUsuario() {
+    this.usuarioSeleccionado.set(null);
+    this.mostrarModalUsuario.set(false);
+    this.mostrarModalEditar.set(false);
+  };
+
+  mostrarEditarUsuario(usuario: UsuarioModel) {
+    if (!confirm('¿Editar usuario?')) {
+      return;
+    };
+    this.usuarioTemporal.set(Object.assign(new UsuarioModel(), usuario));
+    this.usuarioSeleccionado.set(usuario);
+    this.mostrarModalUsuario.set(true);
+    this.mostrarModalEditar.set(true);
+  };
+
+  editarUsuario(body: any) {
+    const usuario = this.usuarioSeleccionado();
+    if (!usuario) {
+      return;
+    };
+    this.loading.set(true);
+    this.usuarioService.updateUsuario(usuario._id, body).subscribe(
+      (result: any) => {
+        alert(result.msg);
+        this.loading.set(false);
+        this.cerrarUsuario();
+        this.cargarUsuarios();
+      },
+      (error: any) => {
+        this.loading.set(false);
+        alert(error.error.msg || "Error del servidor");
+      }
+    );
+  };
+
+  eliminarUsuario(id: string) {
+    if (!confirm('¿Eliminar usuario?')) {
+      return;
+    };
+    this.loading.set(true);
+    this.usuarioService.deleteUsuario(id).subscribe(
+      (result: any) => {
+        alert(result.msg);
+        this.loading.set(false);
+        this.cargarUsuarios();
+      },
+      (error: any) => {
+        this.loading.set(false);
+        alert(error.error.msg || "Error del servidor");
+      }
+    );
   };
 }
