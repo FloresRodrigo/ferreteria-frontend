@@ -17,6 +17,11 @@
           <i class="bi bi-people me-2"></i>
           Usuarios
         </button>
+        <button class="list-group-item list-group-item-action" [class.active]="pestanaActiva() === 'estadisticas'"
+          (click)="cambiarPestana('estadisticas')">
+          <i class="bi bi-bar-chart me-2"></i>
+          Estadisticas
+        </button>
       </div>
     </div>
     <div class="col-lg-9">
@@ -130,7 +135,7 @@
         <div class="mb-3">
           <select class="form-select" id="usuarios" [(ngModel)]="usuarioSelect" (change)="cargarTickets()">
             <option value="">Todos los usuarios</option>
-            <option *ngFor="let u of usuarios()" [value]="u._id">
+            <option *ngFor="let u of allUsuarios()" [value]="u._id">
               {{ u.username }}
             </option>
           </select>
@@ -207,124 +212,234 @@
           </div>
         </div>
       </div>
+      <div *ngIf="pestanaActiva() === 'estadisticas'" class="card shadow-sm p-4">
+        <h4 class="mb-4">Estadísticas</h4>
+        <details open class="stats-accordion">
+          <summary class="h5 mb-0 d-flex align-items-center cursor-pointer stats-header">
+            <i class="bi bi-people me-2"></i>
+            Usuarios
+            <i class="bi bi-chevron-down ms-auto"></i>
+          </summary>
+          <div class="row g-3 mb-0 stats-body">
+            <div class="col-md-4">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Usuarios totales</div>
+                <div class="fs-4 fw-bold">{{ totalUsuarios() }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Usuarios activos</div>
+                <div class="fs-4 fw-bold text-success">{{ usuariosActivos() }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Usuarios inactivos</div>
+                <div class="fs-4 fw-bold text-danger">
+                  {{ totalUsuarios() - usuariosActivos() }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-4 mt-0 mb-3">
+            <div class="mt-0 mb-0">
+              <h6 class="text-center mb-0">Usuarios activos/inactivos</h6>
+              <div class="chart-box d-flex justify-content-center align-items-center">
+                <canvas id="usuariosPie"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="row g-4 mt-0 mb-3 p-4">
+            <div class="mt-0 mb-0">
+              <h6 class="text-center mb-0">Usuarios registrados por mes</h6>
+              <div class="chart-box d-flex justify-content-center align-items-center">
+                <canvas id="usuariosMes"></canvas>
+              </div>
+            </div>
+          </div>
+        </details>
+        <hr>
+        <details class="stats-accordion">
+          <summary class="h5 mb-0 d-flex align-items-center cursor-pointer stats-header">
+            <i class="bi bi-box-seam me-2"></i>
+            Artículos
+            <i class="bi bi-chevron-down ms-auto"></i>
+          </summary>
+          <div class="row g-4 stats-body mb-3">
+            <div class="col-12">
+              <h6 class="text-center mb-2">Artículos más vendidos</h6>
+              <canvas id="articulosVendidos"></canvas>
+            </div>
+          </div>
+        </details>
+        <hr>
+        <details class="stats-accordion">
+          <summary class="h5 mb-0 d-flex align-items-center cursor-pointer stats-header">
+            <i class="bi bi-receipt me-2"></i>
+            Tickets
+            <i class="bi bi-chevron-down ms-auto"></i>
+          </summary>
+          <div class="row g-3 mb-0 stats-body">
+            <div class="col-md-3">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Tickets totales</div>
+                <div class="fs-4 fw-bold">{{ totalTickets() }}</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Tickets pagados</div>
+                <div class="fs-4 fw-bold text-success">
+                  {{ ticketsPagados() }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Tickets pendientes</div>
+                <div class="fs-4 fw-bold text-warning">
+                  {{ ticketsPendientes() }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border rounded-3 p-3 text-center h-100">
+                <div class="text-muted">Tickets cancelados</div>
+                <div class="fs-4 fw-bold text-danger">
+                  {{ ticketsCancelados() }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-4 mt-0 mb-3">
+            <div class="col-md-6 mx-auto mt-0 mb-0">
+              <h6 class="text-center mb-0">Estado de tickets</h6>
+              <div class="chart-box d-flex justify-content-center align-items-center">
+                <canvas id="ticketsPie"></canvas>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
-  <div class="modal-backdrop-custom" *ngIf="mostrarModal()">
-    <div class="ticket-modal">
-      <button class="ticket-close-btn" (click)="cerrarTicket()">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <div class="ticket-header">
-        <h5 class="fw-bold mb-1">Detalle del ticket</h5>
-        <div class="ticket-meta text-muted">
-          <div>Nro. Ticket: {{ ticket()?.nro_ticket }}</div>
-          <div>Estado: {{ ticket()?.estado }}</div>
-          <div>Fecha de compra: {{ ticket()?.fecha_compra | date:'dd/MM/yyyy HH:mm' }}</div>
-        </div>
+</div>
+<div class="modal-backdrop-custom" *ngIf="mostrarModal()">
+  <div class="ticket-modal">
+    <button class="ticket-close-btn" (click)="cerrarTicket()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="ticket-header">
+      <h5 class="fw-bold mb-1">Detalle del ticket</h5>
+      <div class="ticket-meta text-muted">
+        <div>Nro. Ticket: {{ ticket()?.nro_ticket }}</div>
+        <div>Estado: {{ ticket()?.estado }}</div>
+        <div>Fecha de compra: {{ ticket()?.fecha_compra | date:'dd/MM/yyyy HH:mm' }}</div>
       </div>
-      <div class="ticket-divider"></div>
-      <div *ngFor="let item of ticket()?.detalles_ticket" class="ticket-item-row mb-2">
-        <div class="ticket-item-info">
-          <div class="fw-semibold">{{ item.nombre_articulo }}</div>
-          <small class="text-muted">
-            {{ item.cantidad }} x ${{ item.precio_unitario}}
-          </small>
-        </div>
-        <div class="ticket-item-price">
-          ${{ (item.cantidad * item.precio_unitario)}}
-        </div>
+    </div>
+    <div class="ticket-divider"></div>
+    <div *ngFor="let item of ticket()?.detalles_ticket" class="ticket-item-row mb-2">
+      <div class="ticket-item-info">
+        <div class="fw-semibold">{{ item.nombre_articulo }}</div>
+        <small class="text-muted">
+          {{ item.cantidad }} x ${{ item.precio_unitario}}
+        </small>
       </div>
-      <div class="ticket-divider"></div>
-      <div class="ticket-total mb-3">
-        <span>Total</span>
-        <span>${{ ticket()?.total }}</span>
+      <div class="ticket-item-price">
+        ${{ (item.cantidad * item.precio_unitario)}}
+      </div>
+    </div>
+    <div class="ticket-divider"></div>
+    <div class="ticket-total mb-3">
+      <span>Total</span>
+      <span>${{ ticket()?.total }}</span>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop-custom" *ngIf="mostrarModalUsuario()">
+  <div class="ticket-modal">
+    <button class="ticket-close-btn" (click)="cerrarUsuario()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <h5 class="fw-bold mb-3">Información del usuario</h5>
+    <div class="text-start small" *ngIf="usuarioSeleccionado()">
+      <div><strong>Nombre:</strong> {{ usuarioSeleccionado()?.nombre_completo }}</div>
+      <div><strong>Username:</strong> {{ usuarioSeleccionado()?.username }}</div>
+      <div><strong>Email:</strong> {{ usuarioSeleccionado()?.email }}</div>
+      <div><strong>Rol:</strong> {{ usuarioSeleccionado()?.rol }}</div>
+      <div><strong>Estado:</strong> {{ usuarioSeleccionado()?.estado }}</div>
+      <div><strong>Último login:</strong> {{ usuarioSeleccionado()?.lastLogin ? (usuarioSeleccionado()?.lastLogin |
+        date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
+      <div><strong>Último cambio de contraseña:</strong> {{ usuarioSeleccionado()?.passwordChangedAt ?
+        (usuarioSeleccionado()?.passwordChangedAt | date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
+      <div><strong>Solicitud de eliminación de cuenta:</strong> {{ usuarioSeleccionado()?.deleteRequestedAt ?
+        (usuarioSeleccionado()?.deleteRequestedAt | date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
+      <div><strong>Fecha de creación:</strong> {{ usuarioSeleccionado()?.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+      <div><strong>Última modificación:</strong> {{ usuarioSeleccionado()?.updatedAt | date:'dd/MM/yyyy HH:mm' }}
       </div>
     </div>
   </div>
-  <div class="modal-backdrop-custom" *ngIf="mostrarModalUsuario()">
-    <div class="ticket-modal">
-      <button class="ticket-close-btn" (click)="cerrarUsuario()">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <h5 class="fw-bold mb-3">Información del usuario</h5>
-      <div class="text-start small" *ngIf="usuarioSeleccionado()">
-        <div><strong>Nombre:</strong> {{ usuarioSeleccionado()?.nombre_completo }}</div>
-        <div><strong>Username:</strong> {{ usuarioSeleccionado()?.username }}</div>
-        <div><strong>Email:</strong> {{ usuarioSeleccionado()?.email }}</div>
-        <div><strong>Rol:</strong> {{ usuarioSeleccionado()?.rol }}</div>
-        <div><strong>Estado:</strong> {{ usuarioSeleccionado()?.estado }}</div>
-        <div><strong>Último login:</strong> {{ usuarioSeleccionado()?.lastLogin ? (usuarioSeleccionado()?.lastLogin |
-          date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
-        <div><strong>Último cambio de contraseña:</strong> {{ usuarioSeleccionado()?.passwordChangedAt ?
-          (usuarioSeleccionado()?.passwordChangedAt | date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
-        <div><strong>Solicitud de eliminación de cuenta:</strong> {{ usuarioSeleccionado()?.deleteRequestedAt ?
-          (usuarioSeleccionado()?.deleteRequestedAt | date:'dd/MM/yyyy HH:mm') : 'No disponible' }}</div>
-        <div><strong>Fecha de creación:</strong> {{ usuarioSeleccionado()?.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
-        <div><strong>Última modificación:</strong> {{ usuarioSeleccionado()?.updatedAt | date:'dd/MM/yyyy HH:mm' }}
+</div>
+<div class="modal-backdrop-custom" *ngIf="mostrarModalEditar()">
+  <div class="ticket-modal">
+    <button class="ticket-close-btn" (click)="cerrarUsuario()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <h5 class="fw-bold mb-3 text-center">Editar usuario</h5>
+    <form #editarUsuarioForm="ngForm" novalidate>
+      <div class="mb-3 text-start">
+        <label class="form-label" for="nombreEditar">Nombre completo</label>
+        <input class="form-control" id="nombreEditar" placeholder="Nombre completo"
+          [(ngModel)]="usuarioTemporal()!.nombre_completo" name="nombre_completo" #nombreModel="ngModel" required
+          minlength="8" autocomplete="name">
+        <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
+          Ingresá al menos 8 caracteres
         </div>
       </div>
-    </div>
-  </div>
-  <div class="modal-backdrop-custom" *ngIf="mostrarModalEditar()">
-    <div class="ticket-modal">
-      <button class="ticket-close-btn" (click)="cerrarUsuario()">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <h5 class="fw-bold mb-3 text-center">Editar usuario</h5>
-      <form #editarUsuarioForm="ngForm" novalidate>
-        <div class="mb-3 text-start">
-          <label class="form-label" for="nombreEditar">Nombre completo</label>
-          <input class="form-control" id="nombreEditar" placeholder="Nombre completo"
-            [(ngModel)]="usuarioTemporal()!.nombre_completo" name="nombre_completo" #nombreModel="ngModel" required
-            minlength="8" autocomplete="name">
-          <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
-            Ingresá al menos 8 caracteres
-          </div>
+      <div class="mb-3 text-start">
+        <label class="form-label" for="usernameEditar">Username</label>
+        <input class="form-control" id="usernameEditar" placeholder="Username" [(ngModel)]="usuarioTemporal()!.username"
+          name="username" #usernameModel="ngModel" required minlength="4" autocomplete="username">
+        <div class="text-danger small mt-1" *ngIf="usernameModel.invalid && usernameModel.touched">
+          Ingresá al menos 4 caracteres
         </div>
-        <div class="mb-3 text-start">
-          <label class="form-label" for="usernameEditar">Username</label>
-          <input class="form-control" id="usernameEditar" placeholder="Username"
-            [(ngModel)]="usuarioTemporal()!.username" name="username" #usernameModel="ngModel" required minlength="4"
-            autocomplete="username">
-          <div class="text-danger small mt-1" *ngIf="usernameModel.invalid && usernameModel.touched">
-            Ingresá al menos 4 caracteres
-          </div>
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label" for="emailEditar">Email</label>
+        <input class="form-control" id="emailEditar" placeholder="Email" type="email"
+          [(ngModel)]="usuarioTemporal()!.email" name="email" #emailModel="ngModel" required
+          pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email">
+        <div class="text-danger small mt-1" *ngIf="emailModel.invalid && emailModel.touched">
+          Ingresá un email válido
         </div>
-        <div class="mb-3 text-start">
-          <label class="form-label" for="emailEditar">Email</label>
-          <input class="form-control" id="emailEditar" placeholder="Email" type="email"
-            [(ngModel)]="usuarioTemporal()!.email" name="email" #emailModel="ngModel" required
-            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email">
-          <div class="text-danger small mt-1" *ngIf="emailModel.invalid && emailModel.touched">
-            Ingresá un email válido
-          </div>
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label" for="passwordEditar">Nueva contraseña</label>
+        <input class="form-control" id="passwordEditar" placeholder="Nueva contraseña" type="password"
+          [(ngModel)]="passwordTemporal" name="password" #passwordModel="ngModel" minlength="8">
+        <div class="text-danger small mt-1"
+          *ngIf="passwordTemporal() && passwordModel.invalid && passwordModel.touched">
+          La contraseña debe tener al menos 8 caracteres
         </div>
-        <div class="mb-3 text-start">
-          <label class="form-label" for="passwordEditar">Nueva contraseña</label>
-          <input class="form-control" id="passwordEditar" placeholder="Nueva contraseña" type="password"
-            [(ngModel)]="passwordTemporal" name="password" #passwordModel="ngModel" minlength="8">
-          <div class="text-danger small mt-1"
-            *ngIf="passwordTemporal() && passwordModel.invalid && passwordModel.touched">
-            La contraseña debe tener al menos 8 caracteres
-          </div>
-        </div>
-        <div class="mb-3 text-start">
-          <label class="form-label" for="estadoEditar">Estado</label>
-          <select class="form-select" id="estadoEditar" [(ngModel)]="usuarioTemporal()!.estado" name="estado">
-            <option value="ACTIVO">Activo</option>
-            <option value="INACTIVO">Inactivo</option>
-          </select>
-        </div>
-        <button class="btn btn-primary w-100"
-          [disabled]="loading() || editarUsuarioForm.invalid || (passwordTemporal() && passwordModel.invalid)" (click)="editarUsuario({
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label" for="estadoEditar">Estado</label>
+        <select class="form-select" id="estadoEditar" [(ngModel)]="usuarioTemporal()!.estado" name="estado">
+          <option value="ACTIVO">Activo</option>
+          <option value="INACTIVO">Inactivo</option>
+        </select>
+      </div>
+      <button class="btn btn-primary w-100"
+        [disabled]="loading() || editarUsuarioForm.invalid || (passwordTemporal() && passwordModel.invalid)" (click)="editarUsuario({
                 nombre_completo: usuarioTemporal()?.nombre_completo,
                 username: usuarioTemporal()?.username,
                 email: usuarioTemporal()?.email,
                 estado: usuarioTemporal()?.estado,
                 password: passwordTemporal()
               })">
-          {{ loading() ? 'Procesando...' : 'Guardar' }}
-        </button>
-      </form>
-    </div>
+        {{ loading() ? 'Procesando...' : 'Guardar' }}
+      </button>
+    </form>
   </div>
+</div>

@@ -239,3 +239,63 @@
     margin-top: 0.25rem;
   }
 }
+
+.chart-box {
+  height: 320px;
+  position: relative;
+}
+
+#articulosVendidos {
+  min-height: 450px;
+  max-height: 450px;
+}
+
+details summary i.bi-chevron-down {
+  transition: transform 0.2s ease;
+}
+
+details[open] summary i.bi-chevron-down {
+  transform: rotate(180deg);
+}
+
+.stats-accordion {
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.stats-accordion summary {
+  list-style: none;
+}
+
+.stats-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.stats-header {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.stats-header:hover {
+  background-color: #eef2f5;
+}
+
+.stats-header .arrow {
+  transition: transform 0.25s ease;
+}
+
+.stats-accordion[open] .arrow {
+  transform: rotate(180deg);
+}
+
+.stats-body {
+  padding: 1.25rem;
+}
