@@ -87,4 +87,11 @@ export class Auth {
     return payload?.rol === 'ADMIN';
   };
 
+  loginGoogle(idToken:string): Observable<any> {
+    return this._http.post(this.url+'/login-google', { idToken: idToken });
+  };
+
+  setPasswordGoogle(password:string): Observable<any> {
+    return this._http.post(this.url+'/set-password-google', { password });
+  };
 }

@@ -14,6 +14,7 @@ import { Carrito } from './components/carrito/carrito';
 import { Pago } from './components/pago/pago';
 import { Perfil } from './components/perfil/perfil';
 import { Admin } from './components/admin/admin';
+import { SetPassword } from './components/set-password/set-password';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -28,5 +29,6 @@ export const routes: Routes = [
   { path: 'carrito', canActivate: [AuthGuard], component: Carrito },
   { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago },
   { path: 'mi-perfil', canActivate: [AuthGuard], component: Perfil },
-  { path: 'admin', canActivate: [AdminGuard], component: Admin }
+  { path: 'admin', canActivate: [AdminGuard], component: Admin },
+  { path: 'set-password', canActivate: [AuthGuard], component: SetPassword }
 ];

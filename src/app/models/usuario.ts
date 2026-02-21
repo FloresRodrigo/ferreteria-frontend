@@ -10,6 +10,7 @@ export class Usuario {
     deleteRequestedAt!: Date;
     createdAt!: Date;
     updatedAt!: Date;
+    isGoogle!: boolean;
 
     constructor() {
         this.nombre_completo = "";

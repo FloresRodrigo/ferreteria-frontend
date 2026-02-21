@@ -22,7 +22,8 @@
             <label class="form-label" for="nombre">Nombre completo</label>
             <div class="perfil-edit-row">
               <input class="form-control" id="nombre" [disabled]="!editNombre()" [(ngModel)]="nombre_completo"
-                name="nombre_completo" #nombreModel="ngModel" required minlength="8" autocomplete="name" />
+                name="nombre_completo" #nombreModel="ngModel" required minlength="8" autocomplete="name"
+                placeholder="Nombre completo" />
               <button class="btn btn-outline-primary" *ngIf="!editNombre()" (click)="editNombre.set(true)">
                 Editar
               </button>
@@ -42,7 +43,8 @@
             <label class="form-label" for="username">Username</label>
             <div class="perfil-edit-row">
               <input class="form-control" id="username" [disabled]="!editUsername()" [(ngModel)]="username"
-                name="username" #usernameModel="ngModel" required minlength="4" autocomplete="username" />
+                name="username" #usernameModel="ngModel" required minlength="4" autocomplete="username"
+                placeholder="Username" />
               <button class="btn btn-outline-primary" *ngIf="!editUsername()" (click)="editUsername.set(true)">
                 Editar
               </button>
@@ -62,7 +64,8 @@
             <label class="form-label" for="email">Email</label>
             <div class="perfil-edit-row">
               <input class="form-control" id="email" [disabled]="!editEmail()" [(ngModel)]="email" name="email"
-                #emailModel="ngModel" required type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email" />
+                #emailModel="ngModel" required type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email"
+                placeholder="Email" />
               <button class="btn btn-outline-primary" *ngIf="!editEmail()" (click)="editEmail.set(true)">
                 Editar
               </button>
@@ -80,45 +83,47 @@
           </div>
         </form>
         <hr>
-        <button class="btn btn-primary w-100 mb-3" (click)="mostrarPassword.set(!mostrarPassword())">
-          {{ mostrarPassword() ? 'Cerrar cambio de contraseña' : 'Abrir cambio de contraseña' }}
-        </button>
-        <form #passwordForm="ngForm" *ngIf="mostrarPassword()" novalidate>
-          <div class="password-box">
-            <div class="mb-3">
-              <label class="form-label" for="actualPassword">Contraseña actual</label>
-              <input type="password" id="actualPassword" class="form-control" [(ngModel)]="actualPassword"
-                name="actualPassword" required minlength="8" #actualPasswordModel="ngModel"
-                placeholder="Contraseña actual" autocomplete="current-password" />
-              <div class="text-danger small mt-1" *ngIf="actualPasswordModel.invalid && actualPasswordModel.touched">
-                La contraseña debe tener al menos 8 caracteres
+        <div *ngIf="usuario() && !usuario().isGoogle">
+          <button class="btn btn-primary w-100 mb-3" (click)="mostrarPassword.set(!mostrarPassword())">
+            {{ mostrarPassword() ? 'Cerrar cambio de contraseña' : 'Abrir cambio de contraseña' }}
+          </button>
+          <form #passwordForm="ngForm" *ngIf="mostrarPassword()" novalidate>
+            <div class="password-box">
+              <div class="mb-3">
+                <label class="form-label" for="actualPassword">Contraseña actual</label>
+                <input type="password" id="actualPassword" class="form-control" [(ngModel)]="actualPassword"
+                  name="actualPassword" required minlength="8" #actualPasswordModel="ngModel"
+                  placeholder="Contraseña actual" autocomplete="current-password" />
+                <div class="text-danger small mt-1" *ngIf="actualPasswordModel.invalid && actualPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="newPassword">Nueva contraseña</label>
-              <input type="password" id="newPassword" class="form-control" [(ngModel)]="newPassword" name="newPassword"
-                required minlength="8" #newPasswordModel="ngModel" placeholder="Nueva contraseña"
-                autocomplete="new-password" />
-              <div class="text-danger small mt-1" *ngIf="newPasswordModel.invalid && newPasswordModel.touched">
-                La contraseña debe tener al menos 8 caracteres
+              <div class="mb-3">
+                <label class="form-label" for="newPassword">Nueva contraseña</label>
+                <input type="password" id="newPassword" class="form-control" [(ngModel)]="newPassword"
+                  name="newPassword" required minlength="8" #newPasswordModel="ngModel" placeholder="Nueva contraseña"
+                  autocomplete="new-password" />
+                <div class="text-danger small mt-1" *ngIf="newPasswordModel.invalid && newPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="repeatNewPassword">Repetir nueva contraseña</label>
-              <input type="password" id="repeatNewPassword" class="form-control" [(ngModel)]="repeatNewPassword"
-                name="repeatNewPassword" required minlength="8" #repeatNewPasswordModel="ngModel"
-                placeholder="Repetir nueva contraseña" autocomplete="new-password" />
-              <div class="text-danger small mt-1"
-                *ngIf="repeatNewPasswordModel.invalid && repeatNewPasswordModel.touched">
-                La contraseña debe tener al menos 8 caracteres
+              <div class="mb-3">
+                <label class="form-label" for="repeatNewPassword">Repetir nueva contraseña</label>
+                <input type="password" id="repeatNewPassword" class="form-control" [(ngModel)]="repeatNewPassword"
+                  name="repeatNewPassword" required minlength="8" #repeatNewPasswordModel="ngModel"
+                  placeholder="Repetir nueva contraseña" autocomplete="new-password" />
+                <div class="text-danger small mt-1"
+                  *ngIf="repeatNewPasswordModel.invalid && repeatNewPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
               </div>
+              <button class="btn btn-primary w-100" (click)="cambiarPassword()"
+                [disabled]="loading() || passwordForm.invalid">
+                {{ loading() ? 'Procesando...' : 'Cambiar contraseña' }}
+              </button>
             </div>
-            <button class="btn btn-primary w-100" (click)="cambiarPassword()"
-              [disabled]="loading() || passwordForm.invalid">
-              {{ loading() ? 'Procesando...' : 'Cambiar contraseña' }}
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
       <div *ngIf="pestanaActiva() === 'tickets'" class="card shadow-sm p-4">
         <h4 class="mb-4">Mis tickets</h4>

@@ -3,9 +3,9 @@
     <form #f="ngForm" (ngSubmit)="loginUsuario()">
       <h3 class="text-center mb-4 fw-bold text-primary">Iniciar sesión</h3>
       <div class="input mb-3">
-        <label class="form-label fw-semibold" for="login">Email o Username</label>
+        <label class="form-label fw-semibold" for="login">Email/Username</label>
         <input [(ngModel)]="login" #loginModel="ngModel" name="login" id="login" type="text"
-          placeholder="usuario@correo.com o username" class="form-control" required autocomplete="username"/>
+          placeholder="Email/Username" class="form-control" required autocomplete="username"/>
         <div class="text-danger small mt-1" *ngIf="loginModel.invalid && loginModel.touched">
           Ingresá un email o username válido
         </div>
@@ -25,6 +25,9 @@
         [disabled]="loading() || f.invalid">
         {{ loading() ? "Iniciando sesión..." : "Iniciar sesión"}}
       </button>
+      <div class="g_id_signin d-flex justify-content-center mt-3">
+        <div id="googleBtn"></div>
+      </div>
       <p *ngIf="msgLogin() as msg" class="text-danger text-center mt-3 small mb-0 fw-semibold">{{ msg }}</p>
       <p class="text-center small mb-0 mt-3">
         ¿No tenés cuenta?

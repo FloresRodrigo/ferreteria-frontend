@@ -4,7 +4,7 @@
     <form #f="ngForm" (ngSubmit)="registrarUsuario(f)">
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="nombre">Nombre Completo</label>
-        <input [(ngModel)]="nombre" name="nombre" id="nombre" #nombreModel="ngModel" placeholder="Juan Pérez" class="form-control"
+        <input [(ngModel)]="nombre" name="nombre" id="nombre" #nombreModel="ngModel" placeholder="Nombre completo" class="form-control"
           required minlength="8" autocomplete="name"/>
         <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
           Ingresá al menos 8 caracteres
@@ -12,7 +12,7 @@
       </div>
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="username">Nombre de usuario</label>
-        <input [(ngModel)]="username" name="username" id="username" #userModel="ngModel" placeholder="juanperez89"
+        <input [(ngModel)]="username" name="username" id="username" #userModel="ngModel" placeholder="Nombre de usuario"
           class="form-control" required minlength="4" autocomplete="username"/>
         <div class="text-danger small mt-1" *ngIf="userModel.invalid && userModel.touched">
           Ingresá al menos 4 caracteres
@@ -20,7 +20,7 @@
       </div>
       <div class="input mb-3">
         <label class="form-label fw-semibold" for="email">Email</label>
-        <input [(ngModel)]="email" name="email" id="email" #emailModel="ngModel" type="email" placeholder="usuario@correo.com"
+        <input [(ngModel)]="email" name="email" id="email" #emailModel="ngModel" type="email" placeholder="Email"
           class="form-control" required pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email"/>
         <div class="text-danger small mt-1" *ngIf="emailModel.invalid && emailModel.touched">
           Ingresá un email válido
