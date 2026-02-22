@@ -33,7 +33,32 @@
       Ver catálogo
     </a>
   </section>
-  <section class="ofertas-semana container py-4">
+  <section id="stats" class="stats-section mb-3">
+    <div class="row g-4 text-center">
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-people-fill stat-icon"></i>
+          <h3 class="stat-number">{{ usuariosAnimados() }}</h3>
+          <p class="stat-label">Usuarios registrados</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-receipt-cutoff stat-icon"></i>
+          <h3 class="stat-number">{{ ticketsAnimados() }}</h3>
+          <p class="stat-label">Compras realizadas</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-box-seam stat-icon"></i>
+          <h3 class="stat-number">{{ vendidosAnimados() }}</h3>
+          <p class="stat-label">Artículos vendidos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="ofertas-semana py-4">
     <h2 class="fw-bold mb-4 text-primary">Novedades</h2>
     <div class="row g-3">
       <div *ngFor="let art of articulosNuevos()" class="col-md-4">
