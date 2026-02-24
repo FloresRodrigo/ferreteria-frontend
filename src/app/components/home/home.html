@@ -10,7 +10,7 @@
           [ngClass]="{ active: i === 0 }">
           <a routerLink="/compra" class="d-block position-relative text-decoration-none text-dark">
             <span class="badge bg-primary position-absolute top-0 end-0 m-2">MÁS VENDIDO</span>
-            <img [src]="API_CONFIG.hostUrl + art.imagen" class="d-block mx-auto rounded-3 mb-3 img-fluid carousel-img" alt="{{ art.nombre }}">
+            <img [src]="art.imagen" class="d-block mx-auto rounded-3 mb-3 img-fluid carousel-img" alt="{{ art.nombre }}">
             <h4 class="fw-semibold mb-1 text-dark">{{ art.nombre }}</h4>
             <p class="text-muted mb-1">{{ art.descripcion }}</p>
             <p class="price text-primary fw-bold mb-0">${{ art.precio }}</p>
@@ -65,7 +65,7 @@
         <a routerLink="/compra" class="text-decoration-none text-dark">
           <div class="offer-card position-relative section-bg shadow-sm rounded-4 p-3 h-100">
             <span class="badge bg-primary position-absolute top-0 start-0 m-2">Nuevo</span>
-            <img [src]="API_CONFIG.hostUrl + art.imagen" alt="{{ art.nombre }}" class="img-fluid rounded-3 offer-img">
+            <img [src]="art.imagen" alt="{{ art.nombre }}" class="img-fluid rounded-3 offer-img">
             <h5 class="fw-semibold">{{ art.nombre }}</h5>
             <p class="text-muted mb-1">{{ art.descripcion }}</p>
             <p class="price fw-bold text-primary mb-0">${{ art.precio }}</p>

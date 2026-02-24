@@ -33,9 +33,6 @@ export class Home implements OnInit {
     this.top10Articulos();
     this.articulosRecientes();
     this.getStats();
-    setTimeout(() => {
-      this.statsObserver();
-    }, 100);
   }
 
   top10Articulos() {
@@ -68,6 +65,7 @@ export class Home implements OnInit {
         this.usuarios.set(result.data.usuarios);
         this.tickets.set(result.data.tickets);
         this.vendidos.set(result.data.vendidos);
+        this.visibilidadStats();
       },
       (error:any) => {
         alert(error.error.msg || "Error del servidor");
@@ -75,18 +73,18 @@ export class Home implements OnInit {
     );
   };
 
-  private statsObserver() {
+  private visibilidadStats() {
     const statsSection = document.getElementById('stats');
-    if(!statsSection) {
+    if(!statsSection || this.statsAnimadas()) {
       return;
     };
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if(entry.isIntersecting && !this.statsAnimadas()) {
+        if (entry.isIntersecting && !this.statsAnimadas()) {
           this.statsAnimadas.set(true);
           this.animarContadores();
           observer.disconnect();
-        };
+        }
       },
       {
         threshold: 0.5,
@@ -94,6 +92,13 @@ export class Home implements OnInit {
       }
     );
     observer.observe(statsSection);
+    const rect = statsSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if(rect.top < windowHeight && rect.bottom > 0 && !this.statsAnimadas()) {
+      this.statsAnimadas.set(true);
+      this.animarContadores();
+      observer.disconnect();
+    };
   };
 
   private animarContadores() {
