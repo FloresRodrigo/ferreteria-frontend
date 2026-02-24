@@ -1,0 +1,198 @@
+<div class="container my-5 perfil-container">
+  <div class="row">
+    <div class="col-lg-3 mb-4">
+      <div class="list-group shadow-sm perfil-sidebar">
+        <button class="list-group-item list-group-item-action" [class.active]="pestanaActiva() === 'perfil'"
+          (click)="cambiarPestana('perfil')">
+          <i class="bi bi-person me-2"></i>
+          Mi perfil
+        </button>
+        <button class="list-group-item list-group-item-action" [class.active]="pestanaActiva() === 'tickets'"
+          (click)="cambiarPestana('tickets')">
+          <i class="bi bi-receipt me-2"></i>
+          Mis tickets
+        </button>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div *ngIf="pestanaActiva() === 'perfil'" class="card shadow-sm p-4">
+        <h4 class="mb-4">Datos personales</h4>
+        <form #perfilForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label" for="nombre">Nombre completo</label>
+            <div class="perfil-edit-row">
+              <input class="form-control" id="nombre" [disabled]="!editNombre()" [(ngModel)]="nombre_completo"
+                name="nombre_completo" #nombreModel="ngModel" required minlength="8" autocomplete="name"
+                placeholder="Nombre completo" />
+              <button class="btn btn-outline-primary" *ngIf="!editNombre()" (click)="editNombre.set(true)">
+                Editar
+              </button>
+              <button class="btn btn-primary" *ngIf="editNombre()" (click)="guardarNombre()"
+                [disabled]="loading() || nombreModel.invalid">
+                {{ loading() ? 'Procesando...' : 'Guardar' }}
+              </button>
+              <button class="btn btn-outline-danger" *ngIf="editNombre()" (click)="cancelarNombre()">
+                Cancelar
+              </button>
+            </div>
+            <div class="text-danger small mt-1" *ngIf="nombreModel.invalid && nombreModel.touched">
+              Ingresá al menos 8 caracteres
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="username">Username</label>
+            <div class="perfil-edit-row">
+              <input class="form-control" id="username" [disabled]="!editUsername()" [(ngModel)]="username"
+                name="username" #usernameModel="ngModel" required minlength="4" autocomplete="username"
+                placeholder="Username" />
+              <button class="btn btn-outline-primary" *ngIf="!editUsername()" (click)="editUsername.set(true)">
+                Editar
+              </button>
+              <button class="btn btn-primary" *ngIf="editUsername()" (click)="guardarUsername()"
+                [disabled]="loading() || usernameModel.invalid">
+                {{ loading() ? 'Procesando...' : 'Guardar' }}
+              </button>
+              <button class="btn btn-outline-danger" *ngIf="editUsername()" (click)="cancelarUsername()">
+                Cancelar
+              </button>
+            </div>
+            <div class="text-danger small mt-1" *ngIf="usernameModel.invalid && usernameModel.touched">
+              Ingresá al menos 4 caracteres
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="email">Email</label>
+            <div class="perfil-edit-row">
+              <input class="form-control" id="email" [disabled]="!editEmail()" [(ngModel)]="email" name="email"
+                #emailModel="ngModel" required type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" autocomplete="email"
+                placeholder="Email" />
+              <button class="btn btn-outline-primary" *ngIf="!editEmail()" (click)="editEmail.set(true)">
+                Editar
+              </button>
+              <button class="btn btn-primary" *ngIf="editEmail()" (click)="guardarEmail()"
+                [disabled]="loading() || emailModel.invalid">
+                {{ loading() ? 'Procesando...' : 'Guardar' }}
+              </button>
+              <button class="btn btn-outline-danger" *ngIf="editEmail()" (click)="cancelarEmail()">
+                Cancelar
+              </button>
+            </div>
+            <div class="text-danger small mt-1" *ngIf="emailModel.invalid && emailModel.touched">
+              Ingresá un email válido
+            </div>
+          </div>
+        </form>
+        <hr>
+        <div *ngIf="usuario() && !usuario().isGoogle">
+          <button class="btn btn-primary w-100 mb-3" (click)="mostrarPassword.set(!mostrarPassword())">
+            {{ mostrarPassword() ? 'Cerrar cambio de contraseña' : 'Abrir cambio de contraseña' }}
+          </button>
+          <form #passwordForm="ngForm" *ngIf="mostrarPassword()" novalidate>
+            <div class="password-box">
+              <div class="mb-3">
+                <label class="form-label" for="actualPassword">Contraseña actual</label>
+                <input type="password" id="actualPassword" class="form-control" [(ngModel)]="actualPassword"
+                  name="actualPassword" required minlength="8" #actualPasswordModel="ngModel"
+                  placeholder="Contraseña actual" autocomplete="current-password" />
+                <div class="text-danger small mt-1" *ngIf="actualPasswordModel.invalid && actualPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="newPassword">Nueva contraseña</label>
+                <input type="password" id="newPassword" class="form-control" [(ngModel)]="newPassword"
+                  name="newPassword" required minlength="8" #newPasswordModel="ngModel" placeholder="Nueva contraseña"
+                  autocomplete="new-password" />
+                <div class="text-danger small mt-1" *ngIf="newPasswordModel.invalid && newPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="repeatNewPassword">Repetir nueva contraseña</label>
+                <input type="password" id="repeatNewPassword" class="form-control" [(ngModel)]="repeatNewPassword"
+                  name="repeatNewPassword" required minlength="8" #repeatNewPasswordModel="ngModel"
+                  placeholder="Repetir nueva contraseña" autocomplete="new-password" />
+                <div class="text-danger small mt-1"
+                  *ngIf="repeatNewPasswordModel.invalid && repeatNewPasswordModel.touched">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
+              </div>
+              <button class="btn btn-primary w-100" (click)="cambiarPassword()"
+                [disabled]="loading() || passwordForm.invalid">
+                {{ loading() ? 'Procesando...' : 'Cambiar contraseña' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div *ngIf="pestanaActiva() === 'tickets'" class="card shadow-sm p-4">
+        <h4 class="mb-4">Mis tickets</h4>
+        <div *ngIf="tickets().length === 0" class="text-muted">
+          No tenés tickets todavía.
+        </div>
+        <div *ngFor="let t of tickets()" class="ticket-item" (click)="verTicket(t)">
+          <div>
+            <strong>Ticket #{{ t.nro_ticket }}</strong>
+            <div class="text-muted small">{{ t.estado }}</div>
+          </div>
+          <div class="fw-semibold">
+            ${{ t.total }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop-custom" *ngIf="mostrarModal()">
+  <div class="ticket-modal">
+    <button class="ticket-close-btn" (click)="cerrarTicket()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="ticket-header">
+      <h5 class="fw-bold mb-1">Detalle del ticket</h5>
+      <div class="ticket-meta text-muted">
+        <div>Nro. Ticket: {{ ticket()?.nro_ticket }}</div>
+        <div>Estado: {{ ticket()?.estado }}</div>
+        <div>Fecha de compra: {{ ticket()?.fecha_compra | date:'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+    </div>
+    <div class="ticket-divider"></div>
+    <div *ngFor="let item of ticket()?.detalles_ticket" class="ticket-item-row mb-2">
+      <div class="ticket-item-info">
+        <div class="fw-semibold">{{ item.nombre_articulo }}</div>
+        <small class="text-muted">
+          {{ item.cantidad }} x ${{ item.precio_unitario}}
+        </small>
+      </div>
+      <div class="ticket-item-price">
+        ${{ (item.cantidad * item.precio_unitario)}}
+      </div>
+    </div>
+    <div class="ticket-divider"></div>
+    <div class="ticket-total mb-3">
+      <span>Total</span>
+      <span>${{ ticket()?.total }}</span>
+    </div>
+    <div class="d-grid gap-2">
+      <button *ngIf="ticket()?.estado === 'PENDIENTE'" class="btn btn-primary w-100 mt-3" (click)="pagarTicket()"
+        [disabled]="loading() || linkPago()">
+        {{ loading() ? "Procesando..." : "Pagar" }}
+      </button>
+      <div *ngIf="linkPago()" class="payment-info">
+        <p class="fw-semibold mb-1">
+          Para pagar, ingresá al siguiente enlace:
+        </p>
+        <a [href]="linkPago()" target="_blank">
+          {{ linkPago() }}
+        </a>
+        <p class="text-muted small mt-2 mb-0">
+          Al completar el pago, serás redirigido automáticamente.
+        </p>
+      </div>
+      <button *ngIf="ticket()?.estado === 'PENDIENTE'" class="btn btn-outline-danger" (click)="cancelarTicket()"
+        [disabled]="loading()">
+        {{ loading() ? "Procesando..." : "Cancelar" }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<main class="container py-4">
+  <section class="text-center mb-4">
+    <h2 class="fw-bold text-primary">¡Descubrí nuestras herramientas destacadas!</h2>
+    <p class="text-muted lead">Calidad, precio y buena onda en cada producto. No te pierdas nuestras ofertas.</p>
+  </section>
+  <section class="mb-5">
+    <div id="carouselDestacadas" class="carousel slide shadow-sm rounded-4 overflow-hidden section-bg" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div *ngFor="let art of articulosDestacados(); let i = index" class="carousel-item text-center p-4"
+          [ngClass]="{ active: i === 0 }">
+          <a routerLink="/compra" class="d-block position-relative text-decoration-none text-dark">
+            <span class="badge bg-primary position-absolute top-0 end-0 m-2">MÁS VENDIDO</span>
+            <img [src]="API_CONFIG.hostUrl + art.imagen" class="d-block mx-auto rounded-3 mb-3 img-fluid carousel-img" alt="{{ art.nombre }}">
+            <h4 class="fw-semibold mb-1 text-dark">{{ art.nombre }}</h4>
+            <p class="text-muted mb-1">{{ art.descripcion }}</p>
+            <p class="price text-primary fw-bold mb-0">${{ art.precio }}</p>
+          </a>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacadas" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon custom-arrow"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselDestacadas" data-bs-slide="next">
+        <span class="carousel-control-next-icon custom-arrow"></span>
+      </button>
+    </div>
+  </section>
+  <section class="banner p-5 mb-4 text-center section-bg position-relative overflow-hidden">
+    <h1 class="fw-bold mb-3 text-primary">Herramientas para hacer y crear</h1>
+    <p class="lead mb-2 text-secondary">Somos una ferretería de barrio con alma tech. Calidad, precio y buena onda.</p>
+    <p class="notice my-3 text-muted">Envíos en 24–48 h · 6 cuotas sin interés · Garantía oficial</p>
+    <a routerLink="/compra" class="btn btn-primary btn-lg rounded-pill mt-2 shadow-sm px-4 py-2 pulse-hover">
+      Ver catálogo
+    </a>
+  </section>
+  <section id="stats" class="stats-section mb-3">
+    <div class="row g-4 text-center">
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-people-fill stat-icon"></i>
+          <h3 class="stat-number">{{ usuariosAnimados() }}</h3>
+          <p class="stat-label">Usuarios registrados</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-receipt-cutoff stat-icon"></i>
+          <h3 class="stat-number">{{ ticketsAnimados() }}</h3>
+          <p class="stat-label">Compras realizadas</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card section-bg shadow-sm h-100">
+          <i class="bi bi-box-seam stat-icon"></i>
+          <h3 class="stat-number">{{ vendidosAnimados() }}</h3>
+          <p class="stat-label">Artículos vendidos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="ofertas-semana py-4">
+    <h2 class="fw-bold mb-4 text-primary">Novedades</h2>
+    <div class="row g-3">
+      <div *ngFor="let art of articulosNuevos()" class="col-md-4">
+        <a routerLink="/compra" class="text-decoration-none text-dark">
+          <div class="offer-card position-relative section-bg shadow-sm rounded-4 p-3 h-100">
+            <span class="badge bg-primary position-absolute top-0 start-0 m-2">Nuevo</span>
+            <img [src]="API_CONFIG.hostUrl + art.imagen" alt="{{ art.nombre }}" class="img-fluid rounded-3 offer-img">
+            <h5 class="fw-semibold">{{ art.nombre }}</h5>
+            <p class="text-muted mb-1">{{ art.descripcion }}</p>
+            <p class="price fw-bold text-primary mb-0">${{ art.precio }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>

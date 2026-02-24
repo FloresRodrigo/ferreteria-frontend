@@ -1,0 +1,123 @@
+.chatbot-fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #008eff;
+  color: white;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.chatbot-fab:hover {
+  background-color: #005fcc;
+  transform: translateY(-2px);
+}
+
+.chatbot-window {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 320px;
+  max-height: 420px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+@media (max-width: 480px) {
+  .chatbot-window {
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-height: 70vh;
+    bottom: 90px;
+  }
+}
+
+.chatbot-header {
+  background: #008eff;
+  color: white;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.chatbot-body {
+  padding: 0.6rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.mensaje {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.6rem;
+}
+
+.mensaje.bot {
+  align-items: flex-start;
+}
+
+.mensaje.user {
+  align-items: flex-end;
+}
+
+.mensaje.bot .burbuja {
+  background: #e7f0f7;
+}
+
+.mensaje.user .burbuja {
+  background: #008eff;
+  color: white;
+}
+
+.burbuja {
+  padding: 0.5rem 0.7rem;
+  border-radius: 12px;
+  max-width: 85%;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.opciones {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.opciones button,
+.mail-link {
+  background: #f1f1f1;
+  border: none;
+  border-radius: 10px;
+  padding: 0.4rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.opciones button:hover,
+.mail-link:hover {
+  background: #008eff;
+  color: white;
+}

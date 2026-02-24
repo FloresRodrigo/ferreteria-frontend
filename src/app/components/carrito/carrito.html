@@ -1,0 +1,104 @@
+<main class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">Tu Carrito</h1>
+  </div>
+  <div *ngIf="carrito().length === 0"
+    class="empty-cart-box d-flex flex-column justify-content-center align-items-center text-center">
+    <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
+    <h4>Tu carrito está vacío</h4>
+    <p>Agregá productos desde la tienda para verlos aquí</p>
+    <a routerLink="/compra" class="btn btn-primary mt-3">Ir a comprar</a>
+  </div>
+  <div *ngIf="carrito().length > 0" class="row">
+    <section class="col-lg-8 mb-4">
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-outline-danger btn-sm" (click)="vaciarCarrito()">
+          <i class="bi bi-trash"></i> Vaciar carrito
+        </button>
+      </div>
+      <div *ngFor="let item of carrito()" class="list-card align-items-center mb-3">
+        <img [src]="API_CONFIG.hostUrl + item.imagen" class="list-card-img" *ngIf="item.imagen">
+        <div class="flex-grow-1 ps-3">
+          <h6 class="fw-bold">{{ item.nombre }}</h6>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <button class="btn btn-sm btn-primary" (click)="restar(item.id)">-</button>
+            <span>{{ item.cantidad }}</span>
+            <button class="btn btn-sm btn-primary" (click)="sumar(item.id)">+</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminar(item.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="text-end price-box">
+          <div class="price-total">
+            ${{ item.cantidad * item.precio }}
+          </div>
+          <div class="price-unit">
+            ${{ item.precio }} c/u
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="col-lg-4">
+      <div class="sticky-top summary-box p-3">
+        <h5 class="fw-bold text-primary text-center">Resumen</h5>
+        <p>Productos: <strong>{{ totalCantidad() }}</strong></p>
+        <p>Total: <strong>${{ totalPrecio() }}</strong></p>
+        <button class="btn btn-primary w-100 mb-2" (click)="confirmarCompra()">Confirmar compra</button>
+        <a routerLink="/compra" class="btn btn-outline-primary w-100">Ver más productos</a>
+      </div>
+    </aside>
+  </div>
+  <div class="modal-backdrop-custom" *ngIf="mostrarModal()">
+    <div class="ticket-modal">
+      <button class="ticket-close-btn" (click)="mostrarModal.set(false)">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <div class="ticket-header">
+        <i class="bi bi-check-circle-fill text-primary fs-1"></i>
+        <h4 class="fw-bold mt-2">Compra confirmada</h4>
+      </div>
+      <div class="ticket-body" *ngIf="ticket() as t">
+        <div class="ticket-meta">
+          <div><strong>Ticket Nº</strong> {{ t.nro_ticket }}</div>
+          <div class="text-muted">
+            {{ t.fecha_compra | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+        </div>
+        <div class="ticket-divider"></div>
+        <div class="ticket-item" *ngFor="let d of t.detalles_ticket">
+          <div class="ticket-item-row">
+            <div class="ticket-item-info">
+              <div class="fw-semibold">{{ d.nombre_articulo }}</div>
+              <div class="text-muted small">
+                {{ d.cantidad }} × ${{ d.precio_unitario }}
+              </div>
+            </div>
+            <div class="ticket-item-price">
+              ${{ d.cantidad * d.precio_unitario }}
+            </div>
+          </div>
+        </div>
+        <div class="ticket-divider"></div>
+        <div class="ticket-total">
+          <span>Total</span>
+          <span>${{ t.total }}</span>
+        </div>
+        <button class="btn btn-primary w-100 mt-3" (click)="pagarTicket()" [disabled]="loading() || linkPago()">
+          {{ loading() ? "Procesando..." : "Pagar" }}
+        </button>
+        <div *ngIf="linkPago()" class="payment-info mt-3">
+          <p class="fw-semibold mb-1">
+            Para pagar, ingresá al siguiente enlace:
+          </p>
+          <a [href]="linkPago()" target="_blank">
+            {{ linkPago() }}
+          </a>
+          <p class="text-muted small mt-2 mb-0">
+            Al completar el pago, serás redirigido automáticamente.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
