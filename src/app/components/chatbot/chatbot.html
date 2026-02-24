@@ -1,0 +1,28 @@
+<button class="chatbot-fab" (click)="abrirChat()">
+  💬
+</button>
+<div class="chatbot-window" *ngIf="abierto()">
+  <div class="chatbot-header">
+    <span>Soporte</span>
+    <button (click)="abrirChat()">✕</button>
+  </div>
+  <div class="chatbot-body">
+    <div *ngFor="let msg of mensajes()" class="mensaje" [class.bot]="msg.from === 'bot'"
+      [class.user]="msg.from === 'user'">
+      <div class="burbuja">
+        {{ msg.text }}
+      </div>
+      <div class="opciones" *ngIf="msg.options">
+        <ng-container *ngFor="let opt of msg.options">
+          <button *ngIf="opt !== 'Contactar por mail'" (click)="seleccionarOpcion(opt, msg)">
+            {{ opt }}
+          </button>
+          <a *ngIf="opt === 'Contactar por mail'" class="mail-link"
+            href="https://mail.google.com/mail/?view=cm&to=admin@ferreteria.com" target="_blank">
+            Contactar por Gmail
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
