@@ -1,6 +1,6 @@
 export const API_CONFIG = {
-    baseUrl: 'http://localhost:3000/api',
-    hostUrl: 'http://localhost:3000',
+    baseUrl: 'https://ferreteria-backend-teo8.onrender.com/api',
+    hostUrl: 'https://ferreteria-backend-teo8.onrender.com/',
 
     endpoints: {
         auth: 'auth',
