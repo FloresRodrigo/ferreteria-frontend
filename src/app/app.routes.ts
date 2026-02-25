@@ -18,7 +18,6 @@ import { SetPassword } from './components/set-password/set-password';
 
 export const routes: Routes = [
   { path: '', component: Home },
-  { path: '**', redirectTo: ''},
   { path: 'registro', canActivate: [GuestGuard], component: Registro },
   { path: 'login', canActivate: [GuestGuard], component: Login },
   //{ path: 'forgot-password', canActivate: [GuestGuard], component: ForgotPassword },
@@ -31,5 +30,6 @@ export const routes: Routes = [
   { path: 'pago/:estado', canActivate: [AuthGuard], component: Pago },
   { path: 'mi-perfil', canActivate: [AuthGuard], component: Perfil },
   { path: 'admin', canActivate: [AdminGuard], component: Admin },
-  { path: 'set-password', canActivate: [AuthGuard], component: SetPassword }
+  { path: 'set-password', canActivate: [AuthGuard], component: SetPassword },
+  { path: '**', redirectTo: ''},
 ];
