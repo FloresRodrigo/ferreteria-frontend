@@ -177,6 +177,9 @@ export class Admin {
         }));
         this.calcularVendidos();
         this.calcularTickets();
+        if (this.pestanaActiva() === 'estadisticas') {
+          this.crearGraficos();
+        };
       },
       (error: any) => {
         alert(error.error.msg || "Error del servidor");
@@ -228,6 +231,9 @@ export class Admin {
           return Object.assign(new UsuarioModel(), element);
         }));
         this.calcularUsuarios();
+        if (this.pestanaActiva() === 'estadisticas') {
+          this.crearGraficos();
+        };
       },
       (error: any) => {
         alert(error.error.msg || "Error del servidor");
@@ -351,6 +357,10 @@ export class Admin {
           data: [activos, total - activos],
           backgroundColor: ['#008eff', '#ff4d4f']
         }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
   };
@@ -423,6 +433,10 @@ export class Admin {
             '#dc3545'
           ]
         }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
   };

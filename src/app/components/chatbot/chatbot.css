@@ -18,26 +18,25 @@
 
 .chatbot-window {
   position: fixed;
-  bottom: 100px;
+  bottom: 90px;
   right: 30px;
   width: 320px;
-  max-height: 420px;
+  max-height: calc(100dvh - 140px);
   background: white;
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 1000;
 }
 
 @media (max-width: 480px) {
   .chatbot-window {
-    right: 10px;
-    left: 10px;
+    left: 8px;
+    right: 8px;
     width: auto;
-    max-height: 70vh;
-    bottom: 90px;
+    bottom: 80px;
+    max-height: calc(100dvh - 120px);
   }
 }
 
