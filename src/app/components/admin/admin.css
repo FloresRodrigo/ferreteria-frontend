@@ -241,8 +241,9 @@
 }
 
 .chart-box {
-  height: 320px;
   position: relative;
+  width: 100%;
+  height: 300px;
 }
 
 #articulosVendidos {
