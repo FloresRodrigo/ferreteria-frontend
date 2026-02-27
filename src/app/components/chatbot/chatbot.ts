@@ -61,7 +61,7 @@ export class Chatbot {
         break;
       case 'Medios de pago':
         this.responder(
-          'Podés usar el usuario de prueba:\n\n🆔 Usuario: TESTUSER5539511494012944808\n\n🔑 Contraseña: MA6Yc1QCYd\n\n💳 Tarjetas de prueba:\nClave: 123\n\n📩 Verificación de email:\nCódigo: 345776'
+          'Podés usar el usuario de prueba:\n\n🆔 Usuario: TESTUSER5539511494012944808\n\n🔑 Contraseña: MA6Yc1QCYd\n\n💳 Tarjetas de prueba:Elegí siempre la opcion de crédito\nClave: 123\n\n📩 Verificación de email:Si el sistema te solicita un codigo, usá el siguiente\nCódigo: 345776'
         );
         break;
       case '¿Cómo comprar?':

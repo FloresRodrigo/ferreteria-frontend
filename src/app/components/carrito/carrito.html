@@ -17,7 +17,7 @@
         </button>
       </div>
       <div *ngFor="let item of carrito()" class="list-card align-items-center mb-3">
-        <img [src]="API_CONFIG.hostUrl + item.imagen" class="list-card-img" *ngIf="item.imagen">
+        <img [src]="item.imagen" class="list-card-img" *ngIf="item.imagen">
         <div class="flex-grow-1 ps-3">
           <h6 class="fw-bold">{{ item.nombre }}</h6>
           <div class="d-flex align-items-center gap-2 mb-1">
